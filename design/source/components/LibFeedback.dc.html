@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Feedback and overlays</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="s doc" style="width: 1280px; min-height: 1240px; padding: 48px 56px;">
+  <h1 class="doc-h">Feedback and overlays</h1>
+  <section class="comp"><div class="comp-n">Tag</div><div><div class="specs"><div class="spec"><span class="tag">dusk</span><span class="spec-l">Default</span></div><div class="spec"><span class="tag n">Beta</span><span class="spec-l">Neutral</span></div><div class="spec"><span class="tag ok">Stable</span><span class="spec-l">Success</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Progress</div><div><div class="specs"><div class="spec"><div class="prog" style="width: 280px;"><i style="animation: none; width: 56%;"></i></div><span class="spec-l">Determinate</span></div><div class="spec"><div class="prog" style="width: 280px;"><i></i></div><span class="spec-l">Running</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Link</div><div><div class="specs"><div class="spec"><a href="#" class="lnk">Open board</a><span class="spec-l">Hover to underline</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Tooltip</div><div><div class="specs"><div class="spec"><span class="tip" role="tooltip">Copy link</span><span class="spec-l">Default</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Toast</div><div><div class="specs"><div class="spec"><div class="toast" role="status"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fb894" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>Exported 12 files<a href="#" class="lnk" style="margin-left: 12px;">Show</a></div><span class="spec-l">Success</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Menu</div><div><div class="specs"><div class="spec"><div class="menu" role="menu"><button type="button" role="menuitem" class="mi">Open<span class="kbd">↵</span></button><button type="button" role="menuitem" class="mi">Move to board…<span class="kbd">M</span></button><button type="button" role="menuitem" class="mi">Copy link<span class="kbd">⌘L</span></button><div style="height: 1px; margin: 6px 4px; background: #34313a;"></div><button type="button" role="menuitem" class="mi del">Delete</button></div><span class="spec-l">Default</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Dialog</div><div><div class="specs"><div class="spec"><div class="dlg" role="dialog" aria-label="Delete references"><span style="font: 600 22px/28px 'Fira Sans Condensed', sans-serif;">Delete 3 references?</span><div style="display: flex; justify-content: flex-end; gap: 8px;"><button type="button" class="btn bg">Cancel</button><button type="button" class="btn bd">Delete</button></div></div><span class="spec-l">Confirm</span></div></div></div></section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

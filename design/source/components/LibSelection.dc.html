@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Selection</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="s doc" style="width: 1280px; min-height: 1060px; padding: 48px 56px;">
+  <h1 class="doc-h">Selection</h1>
+  <section class="comp"><div class="comp-n">Checkbox</div><div><div class="specs"><div class="spec"><span class="chk"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><span class="spec-l">Unchecked</span></div><div class="spec"><span class="chk on"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><span class="spec-l">Checked</span></div><div class="spec"><span class="chk is-h"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><span class="spec-l">Hover</span></div><div class="spec"><span class="chk on is-p"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><span class="spec-l">Pressed</span></div><div class="spec"><span class="chk is-d"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span><span class="spec-l">Disabled</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 12px;"><sc-for list="{{checks}}" as="c" hint-placeholder-count="3"><button type="button" class="row" role="checkbox" aria-checked="{{c.on}}" onClick="{{c.toggle}}"><span class="{{c.cls}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>{{c.label}}</button></sc-for></div><span class="spec-l">Interactive</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Radio</div><div><div class="specs"><div class="spec"><div style="display: flex; flex-direction: column; gap: 12px;" role="radiogroup" aria-label="Layout"><sc-for list="{{radios}}" as="r" hint-placeholder-count="3"><button type="button" class="row" role="radio" aria-checked="{{r.on}}" onClick="{{r.pick}}"><span class="{{r.cls}}"><span class="dot"></span></span>{{r.label}}</button></sc-for></div><span class="spec-l">Interactive</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Switch</div><div><div class="specs"><div class="spec"><span class="sw"><span class="knob"></span></span><span class="spec-l">Off</span></div><div class="spec"><span class="sw on"><span class="knob"></span></span><span class="spec-l">On</span></div><div class="spec"><span class="sw on is-h"><span class="knob"></span></span><span class="spec-l">Hover</span></div><div class="spec"><span class="sw is-d"><span class="knob"></span></span><span class="spec-l">Disabled</span></div><div class="spec"><button type="button" class="row" onClick="{{toggleSw}}"><span class="{{swCls}}" role="switch" aria-checked="{{sw}}"><span class="knob"></span></span>Auto-save</button><span class="spec-l">Interactive</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">SegmentedControl</div><div><div class="specs"><div class="spec"><div class="{{segCls}}" role="group" aria-label="View"><span class="seg-ind" style="--x: {{segX}}px; --fx: {{segFX}}px;"></span><sc-for list="{{segs}}" as="g" hint-placeholder-count="3"><button type="button" class="{{g.cls}}" aria-pressed="{{g.on}}" onClick="{{g.pick}}">{{g.label}}</button></sc-for></div><span class="spec-l">Interactive</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Slider</div><div><div class="specs"><div class="spec"><div style="display: flex; align-items: center; gap: 14px; width: 360px;"><div class="track" style="flex: 1 1 auto;"><span class="fill"></span><span class="thumb" role="slider" aria-label="Opacity" aria-valuenow="40"></span></div><span style="font: 400 13px/1 'IBM Plex Mono', monospace; color: #a9a5b0;">40%</span></div><span class="spec-l">Default</span></div></div></div></section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1060}}'>
+class Component extends DCLogic {
+  state = { checks: [true, false, true], radio: 0, sw: true, seg: 0 };
+  renderVals() {
+    const s = this.state;
+    const checks = ['Show on site', 'Include EXIF', 'Auto-save'].map((label, i) => ({ label, on: s.checks[i], cls: 'chk' + (s.checks[i] ? ' on' : ''), toggle: () => { const c = s.checks.slice(); c[i] = !c[i]; this.setState({ checks: c }); } }));
+    const radios = ['Grid', 'List', 'Board'].map((label, i) => ({ label, on: s.radio === i, cls: 'chk rad' + (s.radio === i ? ' on' : ''), pick: () => this.setState({ radio: i }) }));
+    const segs = ['Grid', 'List', 'Board'].map((label, i) => ({ label, on: s.seg === i, cls: 'seg-b' + (s.seg === i ? ' on' : ''), pick: () => { if (s.seg !== i) this.setState({ seg: i, segFrom: s.seg, segK: s.segK === 1 ? 2 : 1 }); } }));
+    return {
+      checks, radios, segs,
+      segX: s.seg * 76, segFX: (s.segFrom ?? s.seg) * 76, segCls: 'seg' + (s.segK ? ' k' + s.segK : ''),
+      sw: s.sw, swCls: 'sw' + (s.sw ? ' on' : '') + (s.swMoved ? ' m' : ''), toggleSw: () => this.setState({ sw: !s.sw, swMoved: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

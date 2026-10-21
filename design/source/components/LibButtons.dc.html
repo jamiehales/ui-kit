@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Buttons</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="s doc" style="width: 1280px; min-height: 1120px; padding: 48px 56px;">
+  <h1 class="doc-h">Buttons</h1>
+  <section class="comp"><div class="comp-n">Button</div><div><div class="specs"><div class="spec"><button type="button" class="btn bp">New board</button><span class="spec-l">Primary</span></div><div class="spec"><button type="button" class="btn bs">Import</button><span class="spec-l">Secondary</span></div><div class="spec"><button type="button" class="btn bn">Duplicate</button><span class="spec-l">Neutral</span></div><div class="spec"><button type="button" class="btn bg">Cancel</button><span class="spec-l">Ghost</span></div><div class="spec"><button type="button" class="btn bd">Delete</button><span class="spec-l">Danger</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Button · states</div><div><div class="matrix" style="grid-template-columns: 90px repeat(5, max-content);"><span></span><span class="mx-h">Default</span><span class="mx-h">Hover</span><span class="mx-h">Pressed</span><span class="mx-h">Focus</span><span class="mx-h">Disabled</span><span class="mx-h">Primary</span><button type="button" class="btn bp">New board</button><button type="button" class="btn bp is-h">New board</button><button type="button" class="btn bp is-p">New board</button><button type="button" class="btn bp is-f">New board</button><button type="button" class="btn bp" disabled="{{yes}}">New board</button><span class="mx-h">Secondary</span><button type="button" class="btn bs">Import</button><button type="button" class="btn bs is-h">Import</button><button type="button" class="btn bs is-p">Import</button><button type="button" class="btn bs is-f">Import</button><button type="button" class="btn bs" disabled="{{yes}}">Import</button><span class="mx-h">Neutral</span><button type="button" class="btn bn">Duplicate</button><button type="button" class="btn bn is-h">Duplicate</button><button type="button" class="btn bn is-p">Duplicate</button><button type="button" class="btn bn is-f">Duplicate</button><button type="button" class="btn bn" disabled="{{yes}}">Duplicate</button><span class="mx-h">Ghost</span><button type="button" class="btn bg">Cancel</button><button type="button" class="btn bg is-h">Cancel</button><button type="button" class="btn bg is-p">Cancel</button><button type="button" class="btn bg is-f">Cancel</button><button type="button" class="btn bg" disabled="{{yes}}">Cancel</button><span class="mx-h">Danger</span><button type="button" class="btn bd">Delete</button><button type="button" class="btn bd is-h">Delete</button><button type="button" class="btn bd is-p">Delete</button><button type="button" class="btn bd is-f">Delete</button><button type="button" class="btn bd" disabled="{{yes}}">Delete</button></div></div></section>
+  <section class="comp"><div class="comp-n">Button · sizes</div><div><div class="specs"><div class="spec"><button type="button" class="btn bp">New board</button><span class="spec-l">md · 40px</span></div><div class="spec"><button type="button" class="btn bp sm">New board</button><span class="spec-l">sm · 32px</span></div><div class="spec"><button type="button" class="btn bp"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>New board</button><span class="spec-l">with icon</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">IconButton</div><div><div class="specs"><div class="spec"><button type="button" class="btn bs ib" aria-label="Add"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button><span class="spec-l">Secondary</span></div><div class="spec"><button type="button" class="btn bn ib" aria-label="More"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button><span class="spec-l">Neutral</span></div><div class="spec"><button type="button" class="btn bg ib" aria-label="More"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button><span class="spec-l">Ghost</span></div><div class="spec"><button type="button" class="btn bn ib sm" style="width: 32px;" aria-label="More"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button><span class="spec-l">Small</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">ButtonRow</div><div><div class="specs"><div class="spec"><div style="display: flex; gap: 8px;"><button type="button" class="btn bg">Cancel</button><button type="button" class="btn bp">Save</button></div><span class="spec-l">Dialog footer</span></div><div class="spec"><div style="display: flex; gap: 8px;"><button type="button" class="btn bs">Import</button><button type="button" class="btn bp">New board</button></div><span class="spec-l">Toolbar</span></div></div></div></section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1120}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tabs and accordions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+.t *{box-sizing:border-box}
+.t .lbl{font:600 11px/16px 'IBM Plex Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#a9a5b0}
+.t .num{font:500 12px/16px 'IBM Plex Mono',monospace;color:#c9a45c}
+.t .cell{display:flex;flex-direction:column;gap:12px;min-width:0}
+.t .meta{font:400 12px/16px 'IBM Plex Mono',monospace;color:#a9a5b0}
+.t .pane{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-top:14px}
+.t .pane i{display:block;aspect-ratio:4/3;border-radius:3px;background:#242227}
+@keyframes pane-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.t .pk1{animation:pane-a 260ms ease-out}
+.t .pk2{animation:pane-b 260ms ease-out}
+@keyframes pane-a{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes pane-b{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.t button{font:inherit;color:inherit}
+.t button:focus-visible{outline:2px solid #c9a45c;outline-offset:2px}
+
+/* TabsUnderline */
+.t .tu{position:relative;display:flex;border-bottom:1px solid #34313a}
+.t .tu-b{width:110px;height:40px;border:0;background:none;color:#a9a5b0;font:500 14px/1 'IBM Plex Sans',sans-serif;cursor:pointer;transition:color 140ms}
+.t .tu-b:hover{color:#ecebee}
+.t .tu-b.on{color:#ecebee;font-weight:600}
+.t .tu-i{position:absolute;left:0;bottom:-1px;width:110px;height:2px;background:#a8404f;transform:translateX(var(--x));transition:transform 320ms cubic-bezier(.3,1.2,.5,1)}
+
+/* TabsCount */
+.t .tc-b{display:inline-flex;align-items:center;gap:8px;width:auto;padding:0 14px}
+.t .badge{min-width:22px;height:20px;padding:0 6px;display:inline-grid;place-items:center;border-radius:3px;background:#242227;color:#a9a5b0;font:500 11px/1 'IBM Plex Mono',monospace;transition:background-color 140ms,color 140ms}
+.t .on .badge{background:#2e2226;color:#e8b3ba}
+.t .tc{display:flex;gap:4px;border-bottom:1px solid #34313a}
+.t .tc .tu-b{position:relative;width:auto}
+.t .tc .tu-b::after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;height:2px;background:#a8404f;transform:scaleX(0);transition:transform 220ms cubic-bezier(.3,1.2,.5,1)}
+.t .tc .tu-b.on::after{transform:scaleX(1)}
+
+/* TabsSegment */
+.t .ts{position:relative;display:inline-flex;padding:3px;border:1px solid #0a090b;border-radius:4px;background:#242227;box-shadow:1px 1px 0 #3d3943}
+.t .ts-i{position:absolute;top:3px;left:3px;width:96px;height:32px;border:1px solid #0a090b;border-radius:3px;background:#3a363f;box-shadow:1px 1px 0 #0a090b;transform:translate(var(--x),0);transition:transform 120ms ease-out,box-shadow 120ms ease-out}
+.t .ts:hover .ts-i{transform:translate(calc(var(--x) - 2px),-2px);box-shadow:3px 3px 0 #0a090b}
+.t .ts:active .ts-i{transform:translate(calc(var(--x) + 1px),1px);box-shadow:0 0 0 #0a090b;transition-duration:50ms}
+.t .ts.k1 .ts-i{animation:ts-1 420ms cubic-bezier(.3,.7,.2,1)}
+.t .ts.k2 .ts-i{animation:ts-2 420ms cubic-bezier(.3,.7,.2,1)}
+@keyframes ts-1{0%,12%{transform:translate(calc(var(--fx) + 1px),1px);box-shadow:0 0 0 #0a090b}70%{transform:translate(calc(var(--x) + 1px),1px);box-shadow:0 0 0 #0a090b}100%{transform:translate(calc(var(--x) - 2px),-2px);box-shadow:3px 3px 0 #0a090b}}
+@keyframes ts-2{0%,12%{transform:translate(calc(var(--fx) + 1px),1px);box-shadow:0 0 0 #0a090b}70%{transform:translate(calc(var(--x) + 1px),1px);box-shadow:0 0 0 #0a090b}100%{transform:translate(calc(var(--x) - 2px),-2px);box-shadow:3px 3px 0 #0a090b}}
+.t .ts-b{position:relative;z-index:1;width:96px;height:32px;border:0;background:none;color:#a9a5b0;font:500 13px/1 'IBM Plex Sans',sans-serif;cursor:pointer;transition:color 140ms ease-out 140ms}
+.t .ts-b.on{color:#ecebee}
+
+/* TabsLatch */
+.t .tl{display:flex;gap:8px}
+.t .tl-b{position:relative;height:34px;padding:0 14px;border:1px solid #0a090b;border-radius:4px;background:#1b1a1d;color:#ecebee;font:500 13px/1 'IBM Plex Sans',sans-serif;cursor:pointer;box-shadow:2px 2px 0 #3d3943;transition:transform 110ms ease-out,box-shadow 110ms ease-out,background-color 110ms}
+.t .tl-b::after{content:"";position:absolute;inset:-4px;z-index:-1}
+.t .tl-b:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 #3d3943}
+.t .tl-b:active{transform:translate(2px,2px);box-shadow:0 0 0 #3d3943;transition-duration:50ms}
+.t .tl-b.on,.t .tl-b.on:hover{transform:translate(2px,2px);box-shadow:0 0 0 #6b2833;background:#a8404f;color:#fff;cursor:default}
+
+/* TabsFolder */
+.t .tf{display:flex;gap:4px;padding-left:10px}
+.t .tf-b{position:relative;height:36px;padding:0 16px;border:1px solid #0a090b;border-bottom:0;border-radius:4px 4px 0 0;background:#18171a;color:#a9a5b0;font:500 13px/1 'IBM Plex Sans',sans-serif;cursor:pointer;transform:translateY(4px);transition:transform 160ms cubic-bezier(.2,.8,.2,1),background-color 140ms,color 140ms}
+.t .tf-b:hover{transform:translateY(1px);color:#ecebee}
+.t .tf-b.on{z-index:1;transform:translateY(1px);background:#1b1a1d;color:#ecebee;font-weight:600}
+.t .tf-p{position:relative;padding:4px 14px 14px;border:1px solid #0a090b;border-radius:4px;background:#1b1a1d;box-shadow:2px 2px 0 #2e2b33}
+
+/* TabsVertical */
+.t .tv{position:relative;display:flex;flex-direction:column;width:170px;flex:none;border-left:1px solid #34313a}
+.t .tv-b{height:38px;padding:0 14px;border:0;background:none;color:#a9a5b0;font:500 14px/1 'IBM Plex Sans',sans-serif;text-align:left;cursor:pointer;transition:color 140ms,background-color 140ms}
+.t .tv-b:hover{color:#ecebee;background:#1b1a1d}
+.t .tv-b.on{color:#ecebee;font-weight:600}
+.t .tv-i{position:absolute;left:-1px;top:0;width:2px;height:38px;background:#a8404f;transform:translateY(var(--y));transition:transform 320ms cubic-bezier(.3,1.2,.5,1)}
+
+/* Accordions */
+.t .acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows 280ms cubic-bezier(.2,.8,.2,1)}
+.t .open>.acc-body{grid-template-rows:1fr}
+.t .acc-in{overflow:hidden;min-height:0}
+.t .acc-in>div{padding:0 14px 14px;opacity:0;transition:opacity 200ms ease-out}
+.t .open .acc-in>div{opacity:1;transition-delay:80ms}
+.t .acc-h{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:12px 14px;border:0;background:none;color:#ecebee;font:600 14px/20px 'IBM Plex Sans',sans-serif;text-align:left;cursor:pointer}
+.t .chev{transition:transform 260ms cubic-bezier(.3,1.2,.5,1);color:#a9a5b0}
+.t .open .chev{transform:rotate(180deg)}
+.t .ap{border-top:1px solid #34313a}
+.t .ap:last-child{border-bottom:1px solid #34313a}
+.t .ap .acc-h:hover{background:#1b1a1d}
+.t .ac{position:relative;border:1px solid #0a090b;border-radius:6px;background:#1b1a1d;box-shadow:2px 2px 0 #2e2b33;transition:transform 150ms ease-out,box-shadow 150ms ease-out,border-color 150ms}
+.t .ac::after{content:"";position:absolute;inset:-4px;z-index:-1}
+.t .ac:not(.open):hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 #3d3943}
+.t .ac:not(.open):active{transform:translate(2px,2px);box-shadow:0 0 0 #3d3943;transition-duration:60ms}
+.t .ac.open{border-color:#a8404f;box-shadow:2px 2px 0 #6b2833}
+.t .pm{position:relative;width:14px;height:14px;flex:none}
+.t .pm::before,.t .pm::after{content:"";position:absolute;left:0;top:6px;width:14px;height:2px;border-radius:1px;background:#a9a5b0;transition:transform 260ms cubic-bezier(.3,1.2,.5,1)}
+.t .pm::after{transform:rotate(90deg)}
+.t .open .pm::after{transform:rotate(0deg)}
+.t .open .pm::before{transform:rotate(180deg)}
+.t .am .acc-h{padding-left:0}
+.t .am .acc-in>div{padding-left:26px}
+.t .am{border-bottom:1px solid #34313a}
+.t .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0;font:400 14px/20px 'IBM Plex Sans',sans-serif}
+.t .kv{font:400 13px/18px 'IBM Plex Mono',monospace;color:#a9a5b0}
+
+@media (prefers-reduced-motion: reduce){.t *{transition:none!important;animation:none!important}}
+</style>
+</helmet>
+<div class="t" style="width: 1280px; height: 1640px; padding: 48px; display: flex; flex-direction: column; gap: 48px; background: #131214; color: #ecebee; font-family: 'IBM Plex Sans', sans-serif;">
+  <h1 style="margin: 0; font-family: 'Fira Sans Condensed', sans-serif; font-size: 34px; line-height: 38px; font-weight: 600;">Tabs</h1>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 64px;">
+    <div class="cell"><span class="num">TabsUnderline</span>
+      <div class="tu" role="tablist">
+        <sc-for list="{{tu.items}}" as="x" hint-placeholder-count="3"><button type="button" role="tab" class="{{x.cls}}" aria-selected="{{x.on}}" onClick="{{x.pick}}">{{x.label}}</button></sc-for>
+        <span class="tu-i" style="--x: {{tu.x}}px;"></span>
+      </div>
+      <div class="{{tu.pane}}"><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="cell"><span class="num">TabsCount</span>
+      <div class="tc" role="tablist">
+        <sc-for list="{{tc.items}}" as="x" hint-placeholder-count="3"><button type="button" role="tab" class="{{x.cls}}" aria-selected="{{x.on}}" onClick="{{x.pick}}">{{x.label}}<span class="badge">{{x.n}}</span></button></sc-for>
+      </div>
+      <div class="{{tc.pane}}"><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="cell"><span class="num">TabsSegment</span>
+      <div><div class="{{ts.cls}}" role="tablist">
+        <span class="ts-i" style="--x: {{ts.x}}px; --fx: {{ts.fx}}px;"></span>
+        <sc-for list="{{ts.items}}" as="x" hint-placeholder-count="3"><button type="button" role="tab" class="{{x.cls}}" aria-selected="{{x.on}}" onClick="{{x.pick}}">{{x.label}}</button></sc-for>
+      </div></div>
+      <div class="{{ts.pane}}"><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="cell"><span class="num">TabsLatch</span>
+      <div class="tl" role="tablist">
+        <sc-for list="{{tl.items}}" as="x" hint-placeholder-count="3"><button type="button" role="tab" class="{{x.cls}}" aria-selected="{{x.on}}" onClick="{{x.pick}}">{{x.label}}</button></sc-for>
+      </div>
+      <div class="{{tl.pane}}"><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="cell"><span class="num">TabsFolder</span>
+      <div>
+        <div class="tf" role="tablist">
+          <sc-for list="{{tf.items}}" as="x" hint-placeholder-count="3"><button type="button" role="tab" class="{{x.cls}}" aria-selected="{{x.on}}" onClick="{{x.pick}}">{{x.label}}</button></sc-for>
+        </div>
+        <div class="tf-p"><div class="{{tf.pane}}"><i></i><i></i><i></i></div></div>
+      </div>
+    </div>
+
+    <div class="cell"><span class="num">TabsVertical</span>
+      <div style="display: flex; gap: 20px; align-items: flex-start;">
+        <div class="tv" role="tablist" aria-orientation="vertical">
+          <sc-for list="{{tv.items}}" as="x" hint-placeholder-count="4"><button type="button" role="tab" class="{{x.cls}}" aria-selected="{{x.on}}" onClick="{{x.pick}}">{{x.label}}</button></sc-for>
+          <span class="tv-i" style="--y: {{tv.y}}px;"></span>
+        </div>
+        <div class="{{tv.pane}}" style="flex: 1 1 auto; padding-top: 0; grid-template-columns: repeat(2, minmax(0, 1fr));"><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <h1 style="margin: 0; font-family: 'Fira Sans Condensed', sans-serif; font-size: 34px; line-height: 38px; font-weight: 600;">Accordion</h1>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start;">
+    <div class="cell"><span class="num">AccordionPlain</span>
+      <div>
+        <sc-for list="{{ap}}" as="a" hint-placeholder-count="3">
+          <div class="{{a.cls}}">
+            <button type="button" class="acc-h" aria-expanded="{{a.open}}" onClick="{{a.toggle}}">{{a.title}}<svg class="chev" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+            <div class="acc-body"><div class="acc-in"><div>
+              <sc-for list="{{a.rows}}" as="r" hint-placeholder-count="2"><div class="row"><span>{{r.k}}</span><span class="kv">{{r.v}}</span></div></sc-for>
+            </div></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="cell"><span class="num">AccordionCards</span>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <sc-for list="{{ac}}" as="a" hint-placeholder-count="3">
+          <div class="{{a.cls}}">
+            <button type="button" class="acc-h" aria-expanded="{{a.open}}" onClick="{{a.toggle}}">{{a.title}}<svg class="chev" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+            <div class="acc-body"><div class="acc-in"><div>
+              <sc-for list="{{a.rows}}" as="r" hint-placeholder-count="2"><div class="row"><span>{{r.k}}</span><span class="kv">{{r.v}}</span></div></sc-for>
+            </div></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="cell"><span class="num">AccordionMinimal</span>
+      <div>
+        <sc-for list="{{am}}" as="a" hint-placeholder-count="3">
+          <div class="{{a.cls}}">
+            <button type="button" class="acc-h" aria-expanded="{{a.open}}" onClick="{{a.toggle}}"><span style="display: flex; align-items: center; gap: 12px;"><span class="pm" aria-hidden="true"></span>{{a.title}}</span><span class="meta">{{a.count}}</span></button>
+            <div class="acc-body"><div class="acc-in"><div>
+              <sc-for list="{{a.rows}}" as="r" hint-placeholder-count="2"><div class="row"><span>{{r.k}}</span><span class="kv">{{r.v}}</span></div></sc-for>
+            </div></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1640}}'>
+class Component extends DCLogic {
+  state = { tu: 0, tc: 0, ts: 0, tl: 0, tf: 0, tv: 0, ap: { 0: true }, ac: { 0: true }, am: { 1: true } };
+  tabs(id, labels, base, extra) {
+    const s = this.state;
+    const cur = s[id];
+    return {
+      pane: 'pane pk' + (s[id + 'K'] || 0),
+      items: labels.map((label, i) => ({
+        label,
+        on: cur === i,
+        cls: base + (cur === i ? ' on' : ''),
+        n: extra ? extra[i] : '',
+        pick: () => { if (cur !== i) this.setState({ [id]: i, [id + 'From']: cur, [id + 'K']: s[id + 'K'] === 1 ? 2 : 1 }); }
+      }))
+    };
+  }
+  acc(id, cls, items, single) {
+    const open = this.state[id];
+    return items.map((it, i) => ({
+      ...it,
+      open: !!open[i],
+      cls: cls + (open[i] ? ' open' : ''),
+      toggle: () => this.setState({ [id]: single ? (open[i] ? {} : { [i]: true }) : { ...open, [i]: !open[i] } })
+    }));
+  }
+  renderVals() {
+    const s = this.state;
+    const L = ['All', 'Unsorted', 'Favorites'];
+    const tu = this.tabs('tu', L, 'tu-b'); tu.x = s.tu * 110;
+    const tc = this.tabs('tc', L, 'tu-b tc-b', ['48', '6', '12']);
+    const ts = this.tabs('ts', ['Photos', 'Art', '3D'], 'ts-b');
+    ts.x = s.ts * 96; ts.fx = (s.tsFrom ?? s.ts) * 96; ts.cls = 'ts' + (s.tsK ? ' k' + s.tsK : '');
+    const tl = this.tabs('tl', ['Day', 'Week', 'Month'], 'tl-b');
+    const tf = this.tabs('tf', ['Model', 'Slicing', 'Notes'], 'tf-b');
+    const tv = this.tabs('tv', ['General', 'Export', 'Storage', 'Shortcuts'], 'tv-b'); tv.y = s.tv * 38;
+    const sections = [
+      { title: 'Export', count: '3', rows: [{ k: 'Format', v: 'JPG' }, { k: 'Quality', v: '90%' }, { k: 'Max size', v: '4096 px' }] },
+      { title: 'Storage', count: '2', rows: [{ k: 'Used', v: '3.2 GB' }, { k: 'Limit', v: '10 GB' }] },
+      { title: 'Shortcuts', count: '3', rows: [{ k: 'New board', v: 'N' }, { k: 'Move', v: 'M' }, { k: 'Copy link', v: '⌘L' }] }
+    ];
+    return {
+      tu, tc, ts, tl, tf, tv,
+      ap: this.acc('ap', 'ap', sections, false),
+      ac: this.acc('ac', 'ac', sections, true),
+      am: this.acc('am', 'am', sections, false)
+    };
+  }
+}
+</script>
+</body>
+</html>

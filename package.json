@@ -1,0 +1,34 @@
+{
+  "name": "@jamiehales/ui-kit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.4",
+  "exports": {
+    "./mostlymaking": "./src/mostlymaking/index.ts",
+    "./mostlymaking.css": "./src/mostlymaking/index.css",
+    "./mostlymaking/tokens.css": "./src/mostlymaking/tokens.css"
+  },
+  "peerDependencies": {
+    "radix-ui": ">=1.6.7",
+    "react": ">=19"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "design:tokens": "node scripts/design-tokens.ts"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "jsdom": "^30.1.2",
+    "radix-ui": "1.6.7",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.4"
+  }
+}

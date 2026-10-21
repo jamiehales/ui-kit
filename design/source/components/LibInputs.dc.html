@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Inputs</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="s doc" style="width: 1280px; min-height: 1080px; padding: 48px 56px;">
+  <h1 class="doc-h">Inputs</h1>
+  <section class="comp"><div class="comp-n">TextField</div><div><div class="specs"><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field" type="text" value="Lisbon street light" aria-label="Name"></div><span class="spec-l">Default</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field is-h" type="text" value="Lisbon street light" aria-label="Name"></div><span class="spec-l">Hover</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field focus" type="text" value="Lisbon street light" aria-label="Name"></div><span class="spec-l">Focus</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">File</span><input class="field err" type="text" value="IMG_0042.HEIC" aria-label="File"><span style="font-size: 13px; color: #ef9a96;">Use JPG or PNG.</span></div><span class="spec-l">Error</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field" type="text" value="Lisbon street light" aria-label="Name" disabled="{{yes}}"></div><span class="spec-l">Disabled</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">SearchField</div><div><div class="specs"><div class="spec"><div style="position: relative; width: 300px;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round" style="position: absolute; left: 12px; top: 12px;"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input class="field" type="search" placeholder="Search references" aria-label="Search" style="padding-left: 36px;"></div><span class="spec-l">Default</span></div><div class="spec"><div style="position: relative; width: 300px;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round" style="position: absolute; left: 12px; top: 12px;"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input class="field focus" type="search" value="tram" aria-label="Search" style="padding-left: 36px;"></div><span class="spec-l">Focus</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Select</div><div><div class="specs"><div class="spec"><div class="field sel" role="button" style="width: 220px;"><span>Newest first</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></div><span class="spec-l">Closed</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 220px;"><div class="field sel focus" role="button"><span>Newest first</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></div><div class="menu" role="listbox" style="width: 220px;"><button type="button" class="mi" style="background: #2b2528;">Newest first</button><button type="button" class="mi">Oldest first</button><button type="button" class="mi">Name</button><button type="button" class="mi">Size</button></div></div><span class="spec-l">Open</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">TextArea</div><div><div class="specs"><div class="spec"><textarea class="field" rows="3" style="width: 360px; height: auto; padding: 10px 12px; font-size: 14px; line-height: 20px; resize: vertical;" aria-label="Notes">Warm sodium light on the rails.</textarea><span class="spec-l">Default</span></div></div></div></section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

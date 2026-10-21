@@ -1,0 +1,124 @@
+/* mostlymaking — generated from design/source/system/tokens.json by scripts/design-tokens.ts. Do not edit. */
+
+:root {
+  color-scheme: dark;
+  /* shadcn reads --radius; radius-md is the design's default corner. */
+  --radius: var(--radius-md);
+  --oxblood: #a8404f;
+  --brass: #c9a45c;
+  --heather: #b892c0;
+  --slate: #94a7cc;
+  --sage: #8fb894;
+  --background: #131214;
+  --foreground: #ecebee;
+  --card: #1b1a1d;
+  --card-foreground: var(--foreground);
+  --popover: #232126;
+  --popover-foreground: var(--foreground);
+  --muted: #242227;
+  --muted-foreground: #a9a5b0;
+  --primary: var(--oxblood);
+  --primary-foreground: #ffffff;
+  --primary-text: #e0909b;
+  --secondary: #2a2622;
+  --secondary-foreground: #e0cfa6;
+  --accent: #2b2528;
+  --accent-foreground: #ecebee;
+  --tag: #2e2226;
+  --tag-foreground: #e8b3ba;
+  --link: var(--brass);
+  --destructive: #e2685c;
+  --destructive-foreground: #1a0f0e;
+  --destructive-text: #ef9a96;
+  --success: var(--sage);
+  --border: #34313a;
+  --input: #6c6874;
+  --ring: var(--brass);
+  --chart-1: var(--oxblood);
+  --chart-2: var(--brass);
+  --chart-3: var(--slate);
+  --chart-4: var(--heather);
+  --chart-5: var(--sage);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --shadow-pop: 0 12px 32px -8px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+:where(:root) {
+  --font-display: "Fira Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-logo: "Fira Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+
+@layer components {
+.mm-type-logo {
+  font-family: var(--font-logo);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.mm-type-title-lg {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 38px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.mm-type-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.mm-type-heading {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.mm-type-body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.mm-type-small {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.mm-type-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mm-type-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+}
