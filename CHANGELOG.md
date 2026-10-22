@@ -9,6 +9,10 @@ Each entry looks like this: `- **Kind** \`entry point\`: what changed. Migration
 - Name the exact symbols, parameters and variables in backticks, both old and new.
 - Leave out the Migration part when an app has nothing to do.
 
+## 2026-10-22
+
+- **Fixed** `@jamiehales/ui-kit/mostlymaking.css`: `.mm-dialog` (`DialogContent`) now caps its height at `100dvh - 32px` instead of `100vh - 32px`, so tall dialogs fit the visible screen on mobile browsers instead of running off the top and bottom.
+
 ## 2026-10-21
 
 - **Added** `@jamiehales/ui-kit/mostlymaking`, `@jamiehales/ui-kit/mostlymaking.css` and `@jamiehales/ui-kit/mostlymaking/tokens.css`: the mostlymaking controls, moved here from `@jamiehales/next-kit/ui/mostlymaking`, `@jamiehales/next-kit/ui/mostlymaking.css` and `@jamiehales/next-kit/ui/mostlymaking/tokens.css` unchanged. Earlier history is in next-kit's CHANGELOG.md.
