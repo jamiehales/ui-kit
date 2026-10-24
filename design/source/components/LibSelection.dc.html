@@ -22,19 +22,47 @@ body{margin:0}
   <section class="comp"><div class="comp-n">Radio</div><div><div class="specs"><div class="spec"><div style="display: flex; flex-direction: column; gap: 12px;" role="radiogroup" aria-label="Layout"><sc-for list="{{radios}}" as="r" hint-placeholder-count="3"><button type="button" class="row" role="radio" aria-checked="{{r.on}}" onClick="{{r.pick}}"><span class="{{r.cls}}"><span class="dot"></span></span>{{r.label}}</button></sc-for></div><span class="spec-l">Interactive</span></div></div></div></section>
   <section class="comp"><div class="comp-n">Switch</div><div><div class="specs"><div class="spec"><span class="sw"><span class="knob"></span></span><span class="spec-l">Off</span></div><div class="spec"><span class="sw on"><span class="knob"></span></span><span class="spec-l">On</span></div><div class="spec"><span class="sw on is-h"><span class="knob"></span></span><span class="spec-l">Hover</span></div><div class="spec"><span class="sw is-d"><span class="knob"></span></span><span class="spec-l">Disabled</span></div><div class="spec"><button type="button" class="row" onClick="{{toggleSw}}"><span class="{{swCls}}" role="switch" aria-checked="{{sw}}"><span class="knob"></span></span>Auto-save</button><span class="spec-l">Interactive</span></div></div></div></section>
   <section class="comp"><div class="comp-n">SegmentedControl</div><div><div class="specs"><div class="spec"><div class="{{segCls}}" role="group" aria-label="View"><span class="seg-ind" style="--x: {{segX}}px; --fx: {{segFX}}px;"></span><sc-for list="{{segs}}" as="g" hint-placeholder-count="3"><button type="button" class="{{g.cls}}" aria-pressed="{{g.on}}" onClick="{{g.pick}}">{{g.label}}</button></sc-for></div><span class="spec-l">Interactive</span></div></div></div></section>
-  <section class="comp"><div class="comp-n">Slider</div><div><div class="specs"><div class="spec"><div style="display: flex; align-items: center; gap: 14px; width: 360px;"><div class="track" style="flex: 1 1 auto;"><span class="fill"></span><span class="thumb" role="slider" aria-label="Opacity" aria-valuenow="40"></span></div><span style="font: 400 13px/1 'IBM Plex Mono', monospace; color: #a9a5b0;">40%</span></div><span class="spec-l">Default</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">Slider</div><div><div class="specs"><div class="spec"><div style="display: flex; align-items: center; gap: 14px; width: 360px;"><div class="{{sliderCls}}" style="flex: 1 1 auto;" onPointerDown="{{dragStart}}" onPointerMove="{{dragMove}}" onPointerUp="{{dragEnd}}" onPointerCancel="{{dragEnd}}"><span class="fill" style="width: {{sliderPct}}%;"></span><span class="thumb" role="slider" tabindex="0" aria-label="Opacity" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{sliderPct}}" onKeyDown="{{sliderKey}}" style="left: {{sliderPct}}%;"></span></div><span style="font: 400 13px/1 'IBM Plex Mono', monospace; color: #a9a5b0; width: 36px;">{{sliderPct}}%</span></div><span class="spec-l">Interactive</span></div><div class="spec"><div style="display: flex; align-items: center; gap: 14px; width: 260px;"><div class="track" style="flex: 1 1 auto;"><span class="fill" style="width: 40%;"></span><span class="thumb is-h" style="left: 40%;" aria-hidden="true"></span></div><span style="font: 400 13px/1 'IBM Plex Mono', monospace; color: #a9a5b0;">40%</span></div><span class="spec-l">Hover</span></div><div class="spec"><div style="display: flex; align-items: center; gap: 14px; width: 260px;"><div class="track" style="flex: 1 1 auto;"><span class="fill" style="width: 40%;"></span><span class="thumb is-p" style="left: 40%;" aria-hidden="true"></span></div><span style="font: 400 13px/1 'IBM Plex Mono', monospace; color: #a9a5b0;">40%</span></div><span class="spec-l">Dragging</span></div></div></div></section>
 
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1060}}'>
 class Component extends DCLogic {
-  state = { checks: [true, false, true], radio: 0, sw: true, seg: 0 };
+  state = { checks: [true, false, true], radio: 0, sw: true, seg: 0, slider: 40, drag: false };
   renderVals() {
     const s = this.state;
     const checks = ['Show on site', 'Include EXIF', 'Auto-save'].map((label, i) => ({ label, on: s.checks[i], cls: 'chk' + (s.checks[i] ? ' on' : ''), toggle: () => { const c = s.checks.slice(); c[i] = !c[i]; this.setState({ checks: c }); } }));
     const radios = ['Grid', 'List', 'Board'].map((label, i) => ({ label, on: s.radio === i, cls: 'chk rad' + (s.radio === i ? ' on' : ''), pick: () => this.setState({ radio: i }) }));
     const segs = ['Grid', 'List', 'Board'].map((label, i) => ({ label, on: s.seg === i, cls: 'seg-b' + (s.seg === i ? ' on' : ''), pick: () => { if (s.seg !== i) this.setState({ seg: i, segFrom: s.seg, segK: s.segK === 1 ? 2 : 1 }); } }));
+    // Pressing the thumb keeps the offset to its centre, so it only moves when dragged;
+    // pressing the track jumps the thumb to that spot.
+    const setFrom = (e) => {
+      const r = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - (this.grabOffset || 0);
+      const pct = Math.round(Math.min(1, Math.max(0, (x - r.left) / r.width)) * 100);
+      this.setState({ slider: pct });
+    };
     return {
+      sliderPct: s.slider,
+      sliderCls: 'track' + (s.drag ? ' drag' : ''),
+      dragStart: (e) => {
+        const thumb = e.target.closest ? e.target.closest('.thumb') : null;
+        if (thumb) {
+          const t = thumb.getBoundingClientRect();
+          this.grabOffset = e.clientX - (t.left + t.width / 2);
+        } else {
+          this.grabOffset = 0;
+        }
+        e.currentTarget.setPointerCapture(e.pointerId);
+        this.setState({ drag: true });
+        if (!thumb) setFrom(e);
+      },
+      dragMove: (e) => { if (this.state.drag) setFrom(e); },
+      dragEnd: () => { this.grabOffset = 0; this.setState({ drag: false }); },
+      sliderKey: (e) => {
+        const step = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? -1 : 0;
+        if (step) { e.preventDefault(); this.setState({ slider: Math.min(100, Math.max(0, this.state.slider + step * 5)) }); }
+      },
       checks, radios, segs,
       segX: s.seg * 76, segFX: (s.segFrom ?? s.seg) * 76, segCls: 'seg' + (s.segK ? ' k' + s.segK : ''),
       sw: s.sw, swCls: 'sw' + (s.sw ? ' on' : '') + (s.swMoved ? ' m' : ''), toggleSw: () => this.setState({ sw: !s.sw, swMoved: true })

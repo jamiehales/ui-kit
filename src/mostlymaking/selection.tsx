@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState, type ComponentProps, type ReactNode, type Ref } from "react";
+import { useId, useRef, useState, type ComponentProps, type PointerEvent, type ReactNode, type Ref } from "react";
 import {
   Checkbox as CheckboxPrimitive,
   Label,
@@ -225,9 +225,50 @@ export function Slider({
   ...props
 }: SliderProps) {
   const [current, setCurrent] = useControllable(value, defaultValue, onValueChange);
+  // Radix moves the thumb to the pointer on press, so pressing a thumb off-centre
+  // nudged the value. Remember how far from the thumb's centre it was grabbed (in
+  // value units) and take that off while dragging; a press on the track still jumps.
+  const grab = useRef(0);
+  const min = props.min ?? 0;
+  const max = props.max ?? 100;
+  const step = props.step ?? 1;
+  const vertical = props.orientation === "vertical";
+
+  const onPointerDownCapture = (event: PointerEvent<HTMLSpanElement>) => {
+    grab.current = 0;
+    const thumb = (event.target as Element).closest?.(".mm-slider-thumb");
+    if (!thumb) return;
+    const t = thumb.getBoundingClientRect();
+    const track = event.currentTarget.getBoundingClientRect();
+    const length = vertical ? track.height : track.width;
+    if (length <= 0) return;
+    const offsetPx = vertical ? t.top + t.height / 2 - event.clientY : event.clientX - (t.left + t.width / 2);
+    grab.current = (offsetPx / length) * (max - min);
+  };
+
+  const onSlide = (next: number[]) => {
+    if (grab.current === 0) return setCurrent(next);
+    setCurrent(
+      next.map((v, i) => {
+        if (v === current[i]) return v;
+        const adjusted = Math.round((v - grab.current - min) / step) * step + min;
+        return Math.min(max, Math.max(min, adjusted));
+      }),
+    );
+  };
+
   return (
     <div className={cx("mm-slider-row", className)}>
-      <SliderPrimitive.Root className="mm-slider" value={current} onValueChange={setCurrent} {...props}>
+      <SliderPrimitive.Root
+        className="mm-slider"
+        value={current}
+        onValueChange={onSlide}
+        onPointerDownCapture={onPointerDownCapture}
+        onPointerUp={() => {
+          grab.current = 0;
+        }}
+        {...props}
+      >
         <SliderPrimitive.Track className="mm-slider-track">
           <SliderPrimitive.Range className="mm-slider-range" />
         </SliderPrimitive.Track>

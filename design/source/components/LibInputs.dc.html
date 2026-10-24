@@ -16,18 +16,59 @@
 body{margin:0}
 </style>
 </helmet>
-<div class="s doc" style="width: 1280px; min-height: 1080px; padding: 48px 56px;">
+<div class="s doc" style="width: 1280px; min-height: 1480px; padding: 48px 56px;">
   <h1 class="doc-h">Inputs</h1>
   <section class="comp"><div class="comp-n">TextField</div><div><div class="specs"><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field" type="text" value="Lisbon street light" aria-label="Name"></div><span class="spec-l">Default</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field is-h" type="text" value="Lisbon street light" aria-label="Name"></div><span class="spec-l">Hover</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field focus" type="text" value="Lisbon street light" aria-label="Name"></div><span class="spec-l">Focus</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">File</span><input class="field err" type="text" value="IMG_0042.HEIC" aria-label="File"><span style="font-size: 13px; color: #ef9a96;">Use JPG or PNG.</span></div><span class="spec-l">Error</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 240px;"><span style="font-size: 13px; font-weight: 600;">Name</span><input class="field" type="text" value="Lisbon street light" aria-label="Name" disabled="{{yes}}"></div><span class="spec-l">Disabled</span></div></div></div></section>
   <section class="comp"><div class="comp-n">SearchField</div><div><div class="specs"><div class="spec"><div style="position: relative; width: 300px;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round" style="position: absolute; left: 12px; top: 12px;"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input class="field" type="search" placeholder="Search references" aria-label="Search" style="padding-left: 36px;"></div><span class="spec-l">Default</span></div><div class="spec"><div style="position: relative; width: 300px;"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round" style="position: absolute; left: 12px; top: 12px;"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input class="field focus" type="search" value="tram" aria-label="Search" style="padding-left: 36px;"></div><span class="spec-l">Focus</span></div></div></div></section>
   <section class="comp"><div class="comp-n">Select</div><div><div class="specs"><div class="spec"><div class="field sel" role="button" style="width: 220px;"><span>Newest first</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></div><span class="spec-l">Closed</span></div><div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 220px;"><div class="field sel focus" role="button"><span>Newest first</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></div><div class="menu" role="listbox" style="width: 220px;"><button type="button" class="mi" style="background: #2b2528;">Newest first</button><button type="button" class="mi">Oldest first</button><button type="button" class="mi">Name</button><button type="button" class="mi">Size</button></div></div><span class="spec-l">Open</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">MultiSelect</div><div><div class="specs">
+    <div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 220px;"><span style="font-size: 13px; font-weight: 600;">Creator</span><div class="field sel" role="button" aria-label="Creator"><span class="msel-v msel-ph">Any</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></div></div><span class="spec-l">Nothing chosen</span></div>
+    <div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 220px;"><span style="font-size: 13px; font-weight: 600;">Creator</span><div class="field sel" role="button" aria-label="Creator"><span class="msel-v">Lantern Minis<span class="msel-more">+1</span></span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></div></div><span class="spec-l">Several chosen</span></div>
+    <div class="spec"><div style="display: flex; flex-direction: column; gap: 6px; width: 260px;"><span style="font-size: 13px; font-weight: 600;">Creator</span>
+      <button type="button" class="field sel focus" aria-haspopup="listbox" aria-label="Creator" onClick="{{toggleOpen}}"><span class="{{summaryCls}}">{{summary}}<sc-if value="{{hasMore}}" hint-placeholder-val="{{true}}"><span class="msel-more">+{{more}}</span></sc-if></span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+      <sc-if value="{{open}}" hint-placeholder-val="{{true}}">
+        <div class="menu msel-menu">
+          <div class="msel-search"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a9a5b0" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input type="search" class="field" placeholder="Search" aria-label="Search options" value="{{query}}" onChange="{{setQuery}}"></div>
+          <div class="msel-list" role="listbox" aria-multiselectable="true" aria-label="Creator">
+            <sc-for list="{{items}}" as="o" hint-placeholder-count="5">
+              <button type="button" role="option" aria-selected="{{o.on}}" class="mi msel-item" onClick="{{o.toggle}}"><span class="{{o.boxCls}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg></span>{{o.label}}</button>
+            </sc-for>
+            <sc-if value="{{empty}}" hint-placeholder-val="{{false}}"><p class="msel-empty">No matches</p></sc-if>
+          </div>
+          <sc-if value="{{hasValue}}" hint-placeholder-val="{{true}}"><div class="msel-foot"><button type="button" class="btn bg sm" onClick="{{clear}}">Clear</button></div></sc-if>
+        </div>
+      </sc-if>
+    </div><span class="spec-l">Open: search, chosen first, Clear</span></div>
+  </div></div></section>
   <section class="comp"><div class="comp-n">TextArea</div><div><div class="specs"><div class="spec"><textarea class="field" rows="3" style="width: 360px; height: auto; padding: 10px 12px; font-size: 14px; line-height: 20px; resize: vertical;" aria-label="Notes">Warm sodium light on the rails.</textarea><span class="spec-l">Default</span></div></div></div></section>
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1080}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1480}}'>
 class Component extends DCLogic {
-  renderVals() { return { yes: true }; }
+  constructor(props) {
+    super(props);
+    this.state = { open: true, q: '', value: ['Lantern Minis', 'Bitebrush Studio'] };
+  }
+  renderVals() {
+    const s = this.state;
+    const all = ['Bitebrush Studio', 'Lantern Minis', 'Northforge', 'Hollow Oak', 'Quill and Kiln', 'Saltmarsh Sculpts', 'Tin Lantern'];
+    const q = s.q.trim().toLowerCase();
+    const rest = all.filter((o) => !s.value.includes(o) && (!q || o.toLowerCase().includes(q)));
+    const items = [...s.value, ...rest].map((label) => {
+      const on = s.value.includes(label);
+      return { label, on, boxCls: 'chk' + (on ? ' on' : ''), toggle: () => this.setState({ value: on ? this.state.value.filter((v) => v !== label) : [...this.state.value, label] }) };
+    });
+    return {
+      yes: true,
+      open: s.open, toggleOpen: () => this.setState({ open: !this.state.open }),
+      summary: s.value[0] ?? 'Any', summaryCls: 'msel-v' + (s.value.length ? '' : ' msel-ph'),
+      hasMore: s.value.length > 1, more: s.value.length - 1,
+      query: s.q, setQuery: (e) => this.setState({ q: e.target.value }),
+      items, empty: items.length === 0, hasValue: s.value.length > 0,
+      clear: () => this.setState({ value: [] })
+    };
+  }
 }
 </script>
 </body>

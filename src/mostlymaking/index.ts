@@ -18,6 +18,7 @@ export {
   type LabelProps,
   type SearchFieldProps,
 } from "./fields";
+export { MultiSelect, type MultiSelectProps, type MultiSelectOption } from "./multi-select";
 export {
   Checkbox,
   RadioGroup,
@@ -79,6 +80,7 @@ export {
   type ToastProps,
   type ToastAction,
 } from "./feedback";
+export { HelpTooltip, type HelpTooltipProps } from "./help-tooltip";
 export { Menu, MenuTrigger, MenuContent, MenuItem, MenuCheckboxItem, MenuRadioGroup, MenuRadioItem, MenuLabel, MenuSeparator, type MenuItemProps } from "./menu";
 export {
   Dialog,

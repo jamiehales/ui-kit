@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { useState } from "react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import {
@@ -28,6 +29,7 @@ import {
   DialogFooter,
   DialogTitle,
   DialogTrigger,
+  HelpTooltip,
   IconButton,
   Input,
   Label,
@@ -40,6 +42,7 @@ import {
   MenuRadioItem,
   MenuSeparator,
   MenuTrigger,
+  MultiSelect,
   Progress,
   RadioGroup,
   SegmentedControl,
@@ -547,5 +550,99 @@ describe("CardLink", () => {
     expect(image.style.aspectRatio).toBe("0.8 / 1");
     expect(link.querySelector(".mm-card-reveal")?.getAttribute("aria-hidden")).toBe("true");
     expect(screen.getByText("Miniature").className).toBe("mm-card-reveal-meta");
+  });
+});
+
+describe("HelpTooltip", () => {
+  it("opens on focus, closes on blur and describes the control", () => {
+    render(<HelpTooltip aria-label="About preview version" content="Changing it regenerates old previews." />);
+    const trigger = screen.getByRole("button", { name: "About preview version" });
+    fireEvent.focus(trigger);
+    expect(screen.getByText("Changing it regenerates old previews.")).toBeTruthy();
+    fireEvent.blur(trigger);
+    expect(screen.queryByText("Changing it regenerates old previews.")).toBeNull();
+  });
+
+  it("pins open on click for touch, and a second click closes it", () => {
+    render(<HelpTooltip aria-label="About raft height" content="Measured from the build plate." />);
+    const trigger = screen.getByRole("button", { name: "About raft height" });
+    fireEvent.click(trigger);
+    expect(screen.getByText("Measured from the build plate.")).toBeTruthy();
+    expect(trigger.getAttribute("aria-expanded")).toBe("true");
+    fireEvent.pointerLeave(trigger, { pointerType: "mouse" });
+    expect(screen.getByText("Measured from the build plate.")).toBeTruthy();
+    fireEvent.click(trigger);
+    expect(screen.queryByText("Measured from the build plate.")).toBeNull();
+  });
+
+  it("closes on Escape", () => {
+    render(<HelpTooltip aria-label="About" content="Help text" />);
+    fireEvent.click(screen.getByRole("button", { name: "About" }));
+    fireEvent.keyDown(document.activeElement ?? document.body, { key: "Escape" });
+    expect(screen.queryByText("Help text")).toBeNull();
+  });
+});
+
+describe("MultiSelect", () => {
+  function Harness({ initial = [] as string[], onSearch }: { initial?: string[]; onSearch?: (s: string) => void }) {
+    const [value, setValue] = useState(initial);
+    return (
+      <MultiSelect
+        aria-label="Creator"
+        options={["Lantern Minis", "Bitebrush Studio", { value: "nf", label: "Northforge" }]}
+        value={value}
+        onValueChange={setValue}
+        onSearchChange={onSearch}
+      />
+    );
+  }
+
+  it("shows the placeholder, then the first choice and a count", () => {
+    render(<Harness initial={["Lantern Minis", "nf"]} />);
+    const trigger = screen.getByRole("button", { name: "Creator" });
+    expect(trigger.textContent).toContain("Lantern Minis");
+    expect(trigger.textContent).toContain("+1");
+    cleanup();
+    render(<Harness />);
+    expect(screen.getByRole("button", { name: "Creator" }).textContent).toContain("Any");
+  });
+
+  it("toggles options with clicks and keeps chosen ones first", () => {
+    render(<Harness />);
+    fireEvent.click(screen.getByRole("button", { name: "Creator" }));
+    const list = screen.getByRole("listbox");
+    fireEvent.click(within(list).getByText("Northforge"));
+    const options = within(list).getAllByRole("option");
+    expect(options[0].textContent).toBe("Northforge");
+    expect(options[0].getAttribute("aria-selected")).toBe("true");
+    fireEvent.click(options[0]);
+    expect(within(list).getByText("Northforge").closest("[role=option]")?.getAttribute("aria-selected")).toBe("false");
+  });
+
+  it("filters locally and toggles with the keyboard", () => {
+    render(<Harness />);
+    fireEvent.click(screen.getByRole("button", { name: "Creator" }));
+    const search = screen.getByRole("combobox", { name: "Search options" });
+    fireEvent.change(search, { target: { value: "bite" } });
+    const options = within(screen.getByRole("listbox")).getAllByRole("option");
+    expect(options.map((o) => o.textContent)).toEqual(["Bitebrush Studio"]);
+    fireEvent.keyDown(search, { key: "Enter" });
+    expect(options[0].getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("leaves filtering to the caller when onSearchChange is set", () => {
+    const onSearch = vi.fn();
+    render(<Harness onSearch={onSearch} />);
+    fireEvent.click(screen.getByRole("button", { name: "Creator" }));
+    fireEvent.change(screen.getByRole("combobox", { name: "Search options" }), { target: { value: "zzz" } });
+    expect(onSearch).toHaveBeenCalledWith("zzz");
+    expect(within(screen.getByRole("listbox")).getAllByRole("option")).toHaveLength(3);
+  });
+
+  it("clears every choice", () => {
+    render(<Harness initial={["Lantern Minis"]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Creator" }));
+    fireEvent.click(screen.getByRole("button", { name: "Clear" }));
+    expect(screen.getByRole("button", { name: "Creator" }).textContent).toContain("Any");
   });
 });

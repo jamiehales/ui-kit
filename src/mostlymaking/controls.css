@@ -572,15 +572,33 @@
   }
   .mm-slider-thumb {
     display: block;
+    box-sizing: border-box;
     width: 18px;
     height: 18px;
+    border: 1px solid var(--mm-edge);
     border-radius: var(--radius-full);
     background: var(--foreground);
+    box-shadow: 1px 1px 0 var(--mm-edge);
     cursor: grab;
-    transition: transform var(--mm-t) ease-out;
+    transition:
+      transform 120ms ease-out,
+      box-shadow 120ms ease-out;
   }
-  .mm-slider-thumb:hover {
-    transform: scale(1.2);
+  /* Lifts up-left with a hard shadow on hover, like the Switch knob, and presses in while dragging. */
+  .mm-slider:hover .mm-slider-thumb {
+    transform: var(--mm-lift);
+    box-shadow: 3px 3px 0 var(--mm-edge);
+  }
+  .mm-slider:active .mm-slider-thumb,
+  .mm-slider-thumb:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0 0 0 var(--mm-edge);
+    cursor: grabbing;
+    transition-duration: 50ms;
+  }
+  .mm-slider[data-disabled] .mm-slider-thumb {
+    transform: none;
+    box-shadow: 1px 1px 0 var(--mm-edge);
   }
   .mm-slider-thumb:focus-visible {
     outline: 2px solid var(--ring);
@@ -1024,9 +1042,10 @@
   }
 
   /* Floating layers (positioned by Radix) ----------------------------------- */
+  /* Above dialogs and sheets (51), so a Select or Menu opened inside one shows; below toasts (60). */
   .mm-tip,
   .mm-menu {
-    z-index: 50;
+    z-index: 55;
     transform-origin: var(--radix-popper-transform-origin);
   }
   .mm-tip[data-state="delayed-open"],
@@ -1048,6 +1067,137 @@
     font: 500 12px/16px var(--font-sans);
     white-space: nowrap;
     box-shadow: 4px 4px 0 var(--mm-shadow-soft);
+  }
+
+  /* HelpTooltip ------------------------------------------------------------- */
+  .mm-help {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    flex: none;
+    padding: 0;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-full);
+    background: none;
+    color: var(--muted-foreground);
+    font: 600 11px/1 var(--font-sans);
+    vertical-align: middle;
+    cursor: help;
+    transition:
+      color var(--mm-t) ease-out,
+      border-color var(--mm-t) ease-out;
+  }
+  .mm-help:hover,
+  .mm-help[data-state="open"] {
+    color: var(--foreground);
+    border-color: var(--muted-foreground);
+  }
+  .mm-help:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .mm-help-tip {
+    z-index: 55;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: min(280px, var(--radix-popover-content-available-width, 280px));
+    padding: 10px 12px;
+    border: 1px solid var(--mm-edge);
+    border-radius: 0;
+    background: var(--popover);
+    color: var(--popover-foreground);
+    font: 400 13px/18px var(--font-sans);
+    /* drop-shadow, not box-shadow, so the arrow casts the same shadow */
+    filter: drop-shadow(3px 3px 0 var(--mm-shadow-soft));
+    outline: none;
+  }
+  .mm-help-tip[data-state="open"] {
+    animation: mm-help-in 120ms ease-out;
+  }
+  @keyframes mm-help-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .mm-help-arrow {
+    display: block;
+    /* overlap the bubble's border so the arrow joins it without a seam */
+    transform: translateY(-1px);
+    overflow: visible;
+  }
+  .mm-help-arrow path {
+    fill: var(--popover);
+    stroke: var(--mm-edge);
+    stroke-width: 1px;
+  }
+
+  /* MultiSelect ------------------------------------------------------------- */
+  .mm-multi {
+    width: 100%;
+  }
+  .mm-multi-value,
+  .mm-multi-placeholder {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .mm-multi-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mm-multi-placeholder {
+    color: var(--muted-foreground);
+  }
+  .mm-multi-more {
+    flex: none;
+    font: 500 12px/1 var(--font-mono);
+    color: var(--muted-foreground);
+  }
+  .mm-multi-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: max(var(--radix-popover-trigger-width), 240px);
+    max-height: min(400px, var(--radix-popover-content-available-height));
+  }
+  .mm-multi-search > .mm-field {
+    height: 32px;
+  }
+  .mm-multi-search > svg {
+    top: 8px;
+  }
+  .mm-multi-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .mm-mi.mm-multi-item {
+    justify-content: flex-start;
+  }
+  .mm-multi-item .mm-box {
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+  }
+  .mm-multi-label {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .mm-multi-empty {
+    margin: 0;
+    padding: 8px 10px;
+    color: var(--muted-foreground);
+    font: 400 14px/20px var(--font-sans);
+  }
+  .mm-multi-foot {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
   }
 
   /* Menu and Select list ---------------------------------------------------- */

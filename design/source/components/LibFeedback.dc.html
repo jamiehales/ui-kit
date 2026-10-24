@@ -16,21 +16,66 @@
 body{margin:0}
 </style>
 </helmet>
-<div class="s doc" style="width: 1280px; min-height: 1240px; padding: 48px 56px;">
+<div onClick="{{helpOutside}}" class="s doc" style="width: 1280px; min-height: 1640px; padding: 48px 56px;">
   <h1 class="doc-h">Feedback and overlays</h1>
   <section class="comp"><div class="comp-n">Tag</div><div><div class="specs"><div class="spec"><span class="tag">dusk</span><span class="spec-l">Default</span></div><div class="spec"><span class="tag n">Beta</span><span class="spec-l">Neutral</span></div><div class="spec"><span class="tag ok">Stable</span><span class="spec-l">Success</span></div></div></div></section>
   <section class="comp"><div class="comp-n">Progress</div><div><div class="specs"><div class="spec"><div class="prog" style="width: 280px;"><i style="animation: none; width: 56%;"></i></div><span class="spec-l">Determinate</span></div><div class="spec"><div class="prog" style="width: 280px;"><i></i></div><span class="spec-l">Running</span></div></div></div></section>
   <section class="comp"><div class="comp-n">Link</div><div><div class="specs"><div class="spec"><a href="#" class="lnk">Open board</a><span class="spec-l">Hover to underline</span></div></div></div></section>
   <section class="comp"><div class="comp-n">Tooltip</div><div><div class="specs"><div class="spec"><span class="tip" role="tooltip">Copy link</span><span class="spec-l">Default</span></div></div></div></section>
+  <section class="comp"><div class="comp-n">HelpTooltip</div><div><div class="specs">
+    <div class="spec"><div style="display: flex; align-items: center; gap: 8px; height: 150px; align-items: flex-start; padding-top: 8px;"><span style="font: 500 14px/18px 'IBM Plex Sans', sans-serif;">Minimum preview version</span><span class="help-w"><button type="button" class="help" aria-label="About minimum preview version" aria-describedby="tip-live" data-state="{{help.state}}" onMouseEnter="{{helpShow}}" onMouseLeave="{{helpHide}}" onFocus="{{helpShow}}" onBlur="{{helpBlur}}" onClick="{{helpClick}}" aria-expanded="{{help.open}}" onKeyDown="{{helpKey}}">?</button><sc-if value="{{help.open}}" hint-placeholder-val="{{false}}"><span id="tip-live" class="htip float" role="tooltip" data-side="{{help.side}}" ref="{{helpRef}}" style="left: {{help.x}}px; top: {{help.y}}px; --ax: {{help.ax}}px; visibility: {{help.vis}};">{{tipText}}</span></sc-if></span></div><span class="spec-l">Hover or focus</span></div>
+    <div class="spec"><div style="position: relative; width: 300px; height: 150px; border: 1px dashed #34313a;"><span class="help-w" style="position: absolute; left: 141px; top: 8px;"><span class="help" data-state="open" aria-hidden="true">?</span><span class="htip" data-side="bottom" style="left: -131px; --ax: 140px; animation: none;">{{tipText}}</span></span></div><span class="spec-l">Below (default)</span></div>
+    <div class="spec"><div style="position: relative; width: 300px; height: 150px; border: 1px dashed #34313a;"><span class="help-w" style="position: absolute; left: 8px; top: 8px;"><span class="help" data-state="open" aria-hidden="true">?</span><span class="htip" data-side="bottom" style="left: 0px; --ax: 10px; animation: none;">{{tipText}}</span></span></div><span class="spec-l">Near the left edge: shifts right</span></div>
+    <div class="spec"><div style="position: relative; width: 300px; height: 150px; border: 1px dashed #34313a;"><span class="help-w" style="position: absolute; left: 274px; top: 8px;"><span class="help" data-state="open" aria-hidden="true">?</span><span class="htip" data-side="bottom" style="left: -262px; --ax: 270px; animation: none;">{{tipText}}</span></span></div><span class="spec-l">Near the right edge: shifts left</span></div>
+    <div class="spec"><div style="position: relative; width: 300px; height: 150px; border: 1px dashed #34313a;"><span class="help-w" style="position: absolute; left: 141px; top: 124px;"><span class="help" data-state="open" aria-hidden="true">?</span><span class="htip" data-side="top" style="left: -131px; --ax: 140px; animation: none;">{{tipText}}</span></span></div><span class="spec-l">No room below: flips above</span></div>
+  </div></div></section>
   <section class="comp"><div class="comp-n">Toast</div><div><div class="specs"><div class="spec"><div class="toast" role="status"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fb894" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"></path></svg>Exported 12 files<a href="#" class="lnk" style="margin-left: 12px;">Show</a></div><span class="spec-l">Success</span></div></div></div></section>
   <section class="comp"><div class="comp-n">Menu</div><div><div class="specs"><div class="spec"><div class="menu" role="menu"><button type="button" role="menuitem" class="mi">Open<span class="kbd">↵</span></button><button type="button" role="menuitem" class="mi">Move to board…<span class="kbd">M</span></button><button type="button" role="menuitem" class="mi">Copy link<span class="kbd">⌘L</span></button><div style="height: 1px; margin: 6px 4px; background: #34313a;"></div><button type="button" role="menuitem" class="mi del">Delete</button></div><span class="spec-l">Default</span></div></div></div></section>
   <section class="comp"><div class="comp-n">Dialog</div><div><div class="specs"><div class="spec"><div class="dlg" role="dialog" aria-label="Delete references"><span style="font: 600 22px/28px 'Fira Sans Condensed', sans-serif;">Delete 3 references?</span><div style="display: flex; justify-content: flex-end; gap: 8px;"><button type="button" class="btn bg">Cancel</button><button type="button" class="btn bd">Delete</button></div></div><span class="spec-l">Confirm</span></div></div></div></section>
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1240}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1640}}'>
 class Component extends DCLogic {
-  renderVals() { return { yes: true }; }
+  constructor(props) {
+    super(props);
+    this.state = { help: null };
+  }
+  // HelpTooltip placement: render hidden, measure, then pick the side and clamp the bubble inside the viewport.
+  componentDidUpdate() {
+    const h = this.state.help;
+    if (!h || !h.measuring || !this.helpEl || !this.helpRect) return;
+    const r = this.helpRect, b = this.helpEl.getBoundingClientRect();
+    const vw = document.documentElement.clientWidth, vh = window.innerHeight, pad = 8, gap = 9;
+    const cx = r.left + r.width / 2;
+    const left = Math.min(Math.max(cx - b.width / 2, pad), vw - pad - b.width);
+    const fitsBelow = r.bottom + gap + b.height <= vh - pad;
+    const fitsAbove = r.top - gap - b.height >= pad;
+    const side = fitsBelow || !fitsAbove ? 'bottom' : 'top';
+    this.setState({ help: { measuring: false, pinned: h.pinned, side, x: Math.round(left), y: Math.round(side === 'bottom' ? r.bottom + gap : r.top - gap - b.height), ax: Math.round(Math.min(Math.max(cx - left, 10), b.width - 10)) } });
+  }
+  renderVals() {
+    const h = this.state.help;
+    return {
+      yes: true,
+      tipText: 'Previews can be slow to generate on large libraries, change this version to force previews created on old versions to be regenerated',
+      help: { open: !!h, state: h ? 'open' : 'closed', side: h ? h.side : 'bottom', x: h ? h.x : 0, y: h && h.y != null ? h.y : 0, ax: h ? h.ax : 0, vis: h && !h.measuring ? 'visible' : 'hidden' },
+      helpRef: (el) => { this.helpEl = el; },
+      // Hover and focus open it; a click or tap pins it open (for touch, where there is no hover); a second click, a tap outside, blur or Escape closes it.
+      helpShow: (e) => { if (this.state.help) return; this.helpRect = e.currentTarget.getBoundingClientRect(); this.setState({ help: { measuring: true, pinned: false, side: 'bottom', x: 0, y: 0, ax: 0 } }); },
+      helpHide: () => { if (this.state.help && !this.state.help.pinned) this.setState({ help: null }); },
+      helpBlur: () => this.setState({ help: null }),
+      helpClick: (e) => {
+        const cur = this.state.help;
+        if (cur && cur.pinned) return this.setState({ help: null });
+        if (cur) return this.setState({ help: { ...cur, pinned: true } });
+        this.helpRect = e.currentTarget.getBoundingClientRect();
+        this.setState({ help: { measuring: true, pinned: true, side: 'bottom', x: 0, y: 0, ax: 0 } });
+      },
+      helpOutside: (e) => { if (this.state.help && this.state.help.pinned && !(e.target.closest && e.target.closest('.help-w'))) this.setState({ help: null }); },
+      helpKey: (e) => { if (e.key === 'Escape') this.setState({ help: null }); }
+    };
+  }
 }
 </script>
 </body>

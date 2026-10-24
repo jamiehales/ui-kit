@@ -9,6 +9,14 @@ Each entry looks like this: `- **Kind** \`entry point\`: what changed. Migration
 - Name the exact symbols, parameters and variables in backticks, both old and new.
 - Leave out the Migration part when an app has nothing to do.
 
+## 2026-10-24
+
+- **Fixed** `@jamiehales/ui-kit/mostlymaking.css`: `.mm-menu` and `.mm-tip` (`Select`, `Menu`, `MultiSelect`, `Tooltip`) and `.mm-help-tip` (`HelpTooltip`) now use `z-index: 55` instead of `50`, so they show above a `Dialog` or `Sheet` (`51`) they are opened from.
+- **Added** `@jamiehales/ui-kit/mostlymaking`: `HelpTooltip` (`content`, `aria-label`, `side`), a "?" beside a label whose bubble opens on hover or focus, pins open on click or tap, and floats in a portal so `overflow: hidden` parents don't clip it. Styles are `.mm-help`, `.mm-help-tip` and `.mm-help-arrow` in `@jamiehales/ui-kit/mostlymaking.css`.
+- **Changed** `@jamiehales/ui-kit/mostlymaking.css`: the `Slider` thumb (`.mm-slider-thumb`) now has an edge and a hard offset shadow, lifts up-left on hover like the `Switch` knob and presses in while dragging, instead of scaling up on hover.
+- **Fixed** `@jamiehales/ui-kit/mostlymaking`: pressing a `Slider` thumb off-centre no longer nudges the value; the thumb keeps its grab offset and only moves when dragged. Pressing the track still jumps to that spot.
+- **Added** `@jamiehales/ui-kit/mostlymaking`: `MultiSelect` (`options`, `value`, `onValueChange`, `placeholder`, `onSearchChange`, `loading`) and the `MultiSelectOption` type, a searchable checkbox list for choosing several values; pass `onSearchChange` to filter on the server. Styles are the `.mm-multi*` classes.
+
 ## 2026-10-22
 
 - **Fixed** `@jamiehales/ui-kit/mostlymaking.css`: `.mm-dialog` (`DialogContent`) now caps its height at `100dvh - 32px` instead of `100vh - 32px`, so tall dialogs fit the visible screen on mobile browsers instead of running off the top and bottom.

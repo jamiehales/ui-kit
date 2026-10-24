@@ -52,8 +52,11 @@
 @keyframes sw-off{0%,12%{transform:translate(19px,1px);box-shadow:0 0 0 #0a090b}70%{transform:translate(1px,1px);box-shadow:0 0 0 #0a090b}100%{transform:translate(-2px,-2px);box-shadow:3px 3px 0 #0a090b}}
 .s .track{position:relative;height:6px;border-radius:999px;background:#2b292f;box-shadow:var(--track-shadow)}
 .s .fill{position:absolute;left:0;top:0;bottom:0;width:40%;border-radius:999px;background:#a8404f}
-.s .thumb{position:absolute;left:40%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:999px;background:#ecebee;box-shadow:var(--knob-shadow);transition:transform var(--t) var(--ease);cursor:grab}
-.s .thumb:hover{transform:scale(1.2)}
+.s .thumb{position:absolute;left:40%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:1px solid #0a090b;border-radius:999px;background:#ecebee;box-shadow:1px 1px 0 #0a090b;transition:transform 120ms ease-out,box-shadow 120ms ease-out;cursor:grab}
+/* lifts up-left with a hard shadow on hover, like the switch knob; presses in while dragging */
+.s .thumb:hover,.s .track:hover .thumb,.s .thumb.is-h{transform:translate(-2px,-2px);box-shadow:3px 3px 0 #0a090b}
+.s .thumb:active,.s .track.drag .thumb,.s .thumb.is-p{transform:translate(1px,1px);box-shadow:0 0 0 #0a090b;cursor:grabbing;transition-duration:50ms}
+.s .track{cursor:pointer;touch-action:none}
 .s .seg{position:relative;display:inline-flex;padding:3px;border:1px solid #0a090b;border-radius:4px;background:#242227;box-shadow:1px 1px 0 #3d3943}
 .s .seg-ind{position:absolute;top:3px;left:3px;width:76px;height:30px;border:1px solid #0a090b;border-radius:3px;background:#3a363f;box-shadow:1px 1px 0 #0a090b;transform:translate(var(--x),0);transition:transform 120ms ease-out,box-shadow 120ms ease-out}
 .s .seg:hover .seg-ind{transform:translate(calc(var(--x) - 2px),-2px);box-shadow:3px 3px 0 #0a090b}
@@ -105,6 +108,35 @@
 .s .bn{background-color:#1b1a1d;color:#ecebee;box-shadow:var(--b-shadow)}
 .s .bn:hover{background-color:#232126;box-shadow:4px 4px 0 #3d3943;transform:var(--lift)}
 .s .field:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+
+/* help tooltip: a ? trigger with a square bubble that points at it; below by default, shifts sideways and flips above to stay on screen */
+.s .help-w{position:relative;display:inline-flex;vertical-align:middle}
+.s .help{display:inline-grid;place-items:center;width:18px;height:18px;padding:0;border:1px solid #6c6874;border-radius:999px;background:none;color:#a9a5b0;font:600 11px/1 'IBM Plex Sans',sans-serif;cursor:help;transition:color 110ms ease-out,border-color 110ms ease-out}
+.s .help:hover,.s .help[data-state="open"]{color:#ecebee;border-color:#a9a5b0}
+.s .help:focus-visible{outline:2px solid #c9a45c;outline-offset:2px}
+.s .htip{position:absolute;z-index:20;width:max-content;max-width:280px;padding:10px 12px;border:1px solid #0a090b;border-radius:0;background:#232126;color:#ecebee;font:400 13px/18px 'IBM Plex Sans',sans-serif;text-align:left;white-space:normal;filter:drop-shadow(3px 3px 0 #2e2b33);pointer-events:none;animation:htip-in 120ms ease-out}
+.s .htip::before{content:"";position:absolute;left:var(--ax);width:10px;height:10px;margin-left:-6px;background:#232126;border:1px solid #0a090b;transform:rotate(45deg)}
+.s .htip[data-side="bottom"]{top:calc(100% + 9px)}
+.s .htip[data-side="bottom"]::before{top:-6px;border-right:0;border-bottom:0}
+.s .htip[data-side="top"]{bottom:calc(100% + 9px)}
+.s .htip[data-side="top"]::before{bottom:-6px;border-left:0;border-top:0}
+@keyframes htip-in{from{opacity:0}to{opacity:1}}
+/* floating: positioned against the viewport (like a portal), so no ancestor with overflow:hidden clips it */
+.s .htip.float[data-side]{position:fixed;bottom:auto}
+
+/* multi-select: a select trigger that opens a searchable checkbox list */
+.s .msel-v{display:inline-flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.s .msel-ph{color:#a9a5b0}
+.s .msel-more{flex:none;font:500 12px/1 'IBM Plex Mono',monospace;color:#a9a5b0}
+.s .msel-menu{display:flex;flex-direction:column;gap:6px;width:260px}
+.s .msel-search{position:relative}
+.s .msel-search svg{position:absolute;left:12px;top:8px}
+.s .msel-search .field{height:32px;padding-left:36px;font-size:14px}
+.s .msel-list{display:flex;flex-direction:column;max-height:208px;overflow-y:auto}
+.s .mi.msel-item{justify-content:flex-start;gap:10px}
+.s .msel-item .chk{width:18px;height:18px;pointer-events:none}
+.s .msel-empty{margin:0;padding:8px 10px;color:#a9a5b0;font:400 14px/20px 'IBM Plex Sans',sans-serif}
+.s .msel-foot{display:flex;justify-content:flex-end;padding-top:6px;border-top:1px solid #34313a}
 
 /* forced states, for showing hover / pressed / focus side by side */
 .s .bp.is-h{background-color:#b54c5b;box-shadow:var(--p-shadow-h);transform:var(--lift)}
