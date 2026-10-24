@@ -9,6 +9,10 @@ Each entry looks like this: `- **Kind** \`entry point\`: what changed. Migration
 - Name the exact symbols, parameters and variables in backticks, both old and new.
 - Leave out the Migration part when an app has nothing to do.
 
+## 2026-10-25
+
+- **Changed** `@jamiehales/ui-kit/mostlymaking.css`: disabled controls no longer react to the pointer. A disabled `Button` / `IconButton` (`:disabled` or `aria-disabled="true"`) is flat, with no offset shadow, and no longer recolours, lifts or presses on hover and click. Disabled `Chip`, `Input` / `SelectTrigger` (`.mm-field`), bare `Checkbox` boxes and `SegmentedControl` no longer change on hover either; a disabled `SegmentedControl` is now dimmed.
+
 ## 2026-10-24
 
 - **Fixed** `@jamiehales/ui-kit/mostlymaking.css`: `.mm-menu` and `.mm-tip` (`Select`, `Menu`, `MultiSelect`, `Tooltip`) and `.mm-help-tip` (`HelpTooltip`) now use `z-index: 55` instead of `50`, so they show above a `Dialog` or `Sheet` (`51`) they are opened from.

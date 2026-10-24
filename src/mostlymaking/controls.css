@@ -113,7 +113,7 @@
     color: var(--primary-foreground);
     box-shadow: 2px 2px 0 var(--mm-primary-shadow);
   }
-  .mm-btn[data-variant="primary"]:hover {
+  .mm-btn[data-variant="primary"]:not(:disabled, [aria-disabled="true"]):hover {
     background-color: var(--mm-primary-hover);
     box-shadow: 4px 4px 0 var(--mm-primary-shadow);
     transform: var(--mm-lift);
@@ -123,7 +123,7 @@
     color: var(--secondary-foreground);
     box-shadow: 2px 2px 0 var(--mm-shadow);
   }
-  .mm-btn[data-variant="secondary"]:hover {
+  .mm-btn[data-variant="secondary"]:not(:disabled, [aria-disabled="true"]):hover {
     background-color: var(--mm-secondary-hover);
     box-shadow: 4px 4px 0 var(--mm-shadow);
     transform: var(--mm-lift);
@@ -133,7 +133,7 @@
     color: var(--foreground);
     box-shadow: 2px 2px 0 var(--mm-shadow);
   }
-  .mm-btn[data-variant="neutral"]:hover {
+  .mm-btn[data-variant="neutral"]:not(:disabled, [aria-disabled="true"]):hover {
     background-color: var(--popover);
     box-shadow: 4px 4px 0 var(--mm-shadow);
     transform: var(--mm-lift);
@@ -144,7 +144,7 @@
     border-color: transparent;
     box-shadow: none;
   }
-  .mm-btn[data-variant="ghost"]:hover {
+  .mm-btn[data-variant="ghost"]:not(:disabled, [aria-disabled="true"]):hover {
     background-color: var(--accent);
   }
   .mm-btn[data-variant="danger"] {
@@ -152,32 +152,37 @@
     color: var(--destructive-foreground);
     box-shadow: 2px 2px 0 var(--mm-destructive-shadow);
   }
-  .mm-btn[data-variant="danger"]:hover {
+  .mm-btn[data-variant="danger"]:not(:disabled, [aria-disabled="true"]):hover {
     background-color: var(--mm-destructive-hover);
     box-shadow: 4px 4px 0 var(--mm-destructive-shadow);
     transform: var(--mm-lift);
   }
   /* Press keeps each shadow's own colour so it collapses in place. */
-  .mm-btn:active {
+  .mm-btn:not(:disabled, [aria-disabled="true"]):active {
     transform: var(--mm-press);
     box-shadow: 0 0 0 var(--mm-shadow);
   }
-  .mm-btn[data-variant="primary"]:active {
+  .mm-btn[data-variant="primary"]:not(:disabled, [aria-disabled="true"]):active {
     box-shadow: 0 0 0 var(--mm-primary-shadow);
   }
-  .mm-btn[data-variant="danger"]:active {
+  .mm-btn[data-variant="danger"]:not(:disabled, [aria-disabled="true"]):active {
     box-shadow: 0 0 0 var(--mm-destructive-shadow);
   }
-  .mm-btn[data-variant="ghost"]:active {
+  .mm-btn[data-variant="ghost"]:not(:disabled, [aria-disabled="true"]):active {
     transform: scale(0.97);
     box-shadow: none;
   }
+  /* Disabled buttons are flat: no shadow, and no hover or press (those rules skip them). */
   .mm-btn:disabled,
   .mm-btn[aria-disabled="true"] {
     opacity: 0.4;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+  }
+  .mm-btn:disabled::after,
+  .mm-btn[aria-disabled="true"]::after {
+    content: none;
   }
 
   .mm-btn-row {
@@ -221,7 +226,7 @@
   .mm-field::placeholder {
     color: var(--muted-foreground);
   }
-  .mm-field:hover {
+  .mm-field:hover:not(:disabled) {
     border-color: var(--mm-input-hover);
   }
   .mm-field:focus,
@@ -236,6 +241,13 @@
   .mm-field:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+    box-shadow: none;
+  }
+  .mm-seg[data-disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .mm-seg[data-disabled] .mm-seg-ind {
     box-shadow: none;
   }
   textarea.mm-field {
@@ -473,11 +485,11 @@
       box-shadow 120ms ease-out,
       width 120ms ease-out;
   }
-  .mm-seg:hover .mm-seg-ind {
+  .mm-seg:not([data-disabled]):hover .mm-seg-ind {
     transform: translate(calc(var(--mm-x, 0px) - 2px), -2px);
     box-shadow: 3px 3px 0 var(--mm-edge);
   }
-  .mm-seg:active .mm-seg-ind {
+  .mm-seg:not([data-disabled]):active .mm-seg-ind {
     transform: translate(calc(var(--mm-x, 0px) + 1px), 1px);
     box-shadow: 0 0 0 var(--mm-edge);
     transition-duration: 50ms;
@@ -1535,11 +1547,11 @@
     background-size: 0 1px;
     transition: background-size 240ms ease-out;
   }
-  .mm-btn[data-variant="link"]:hover,
+  .mm-btn[data-variant="link"]:not(:disabled, [aria-disabled="true"]):hover,
   .mm-btn[data-variant="link"]:focus-visible {
     background-size: 100% 1px;
   }
-  .mm-btn[data-variant="link"]:active {
+  .mm-btn[data-variant="link"]:not(:disabled, [aria-disabled="true"]):active {
     transform: none;
     box-shadow: none;
   }
@@ -1561,7 +1573,7 @@
     font: 600 13px/20px var(--font-sans);
     cursor: pointer;
   }
-  .mm-box:hover {
+  .mm-box:hover:not([data-disabled]) {
     transform: var(--mm-lift);
     box-shadow: 3px 3px 0 var(--mm-shadow);
   }
@@ -1588,7 +1600,7 @@
       color var(--mm-t) ease-out,
       border-color var(--mm-t) ease-out;
   }
-  .mm-chip:hover {
+  .mm-chip:hover:not(:disabled) {
     color: var(--foreground);
     border-color: var(--input);
   }

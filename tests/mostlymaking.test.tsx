@@ -103,6 +103,22 @@ describe("mostlymaking tokens", () => {
   });
 });
 
+describe("mostlymaking control styles", () => {
+  const css = readFileSync(fromRoot("src/mostlymaking/controls.css"), "utf8");
+
+  it("never lifts, presses or recolours a disabled button", () => {
+    const selectors = css.match(/\.mm-btn[^{}]*?:(?:hover|active)(?![\w-])/g) ?? [];
+    expect(selectors.length).toBeGreaterThan(0);
+    for (const selector of selectors) {
+      expect(selector).toContain(':not(:disabled, [aria-disabled="true"])');
+    }
+  });
+
+  it("keeps disabled buttons flat", () => {
+    expect(css).toMatch(/\.mm-btn:disabled,\s*\.mm-btn\[aria-disabled="true"\] \{[^}]*box-shadow: none;[^}]*\}/);
+  });
+});
+
 describe("mostlymaking controls", () => {
   it("Button defaults to a neutral, non-submitting button", () => {
     render(<Button>Duplicate</Button>);
