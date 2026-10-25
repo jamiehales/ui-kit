@@ -1672,7 +1672,8 @@
     transform: translate(-3px, -3px);
     box-shadow: 5px 5px 0 var(--mm-shadow);
   }
-  .mm-card-link:active {
+  /* A press on a control inside the card presses only that control. */
+  .mm-card-link:active:not(:has(:is(button, [role="button"], input, select, textarea, label):active)) {
     transform: var(--mm-press);
     box-shadow: 0 0 0 var(--mm-shadow);
     transition-duration: 60ms;

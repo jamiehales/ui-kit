@@ -11,6 +11,7 @@ Each entry looks like this: `- **Kind** \`entry point\`: what changed. Migration
 
 ## 2026-10-25
 
+- **Fixed** `@jamiehales/ui-kit/mostlymaking.css`: pressing a button, input or other control inside a `CardLink` (`.mm-card-link`) no longer presses the whole card; only the control plays its press.
 - **Changed** `@jamiehales/ui-kit/mostlymaking.css`: disabled controls no longer react to the pointer. A disabled `Button` / `IconButton` (`:disabled` or `aria-disabled="true"`) is flat, with no offset shadow, and no longer recolours, lifts or presses on hover and click. Disabled `Chip`, `Input` / `SelectTrigger` (`.mm-field`), bare `Checkbox` boxes and `SegmentedControl` no longer change on hover either; a disabled `SegmentedControl` is now dimmed.
 
 ## 2026-10-24
