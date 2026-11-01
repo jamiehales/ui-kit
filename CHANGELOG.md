@@ -11,6 +11,9 @@ Each entry looks like this: `- **Kind** \`entry point\`: what changed. Migration
 
 ## 2026-11-01
 
+- **Added** `@jamiehales/ui-kit/mostlymaking`: `Accordion` takes `trailingDivider` (default `true`). Set it to `false` to drop the divider under the last item of a `plain` or `minimal` accordion, e.g. when a `Separator` already follows it. It sets `data-trailing-divider="false"` on `.mm-acc`.
+- **Added** `@jamiehales/ui-kit/mostlymaking`: `IconTooltip` (`icon`, `content`, `aria-label`, `side`, `className`), the bubble behind `HelpTooltip` with any icon as its trigger, and `WarningTooltip` (`content`, `aria-label`, `side`, `className`), a warning triangle in `--brass` with the same bubble. `HelpTooltip` is now built on `IconTooltip`; its props and look are unchanged. New types: `IconTooltipProps`, `WarningTooltipProps`.
+- **Added** `@jamiehales/ui-kit/mostlymaking.css`: `.mm-icon-tip` (the shared trigger styles, now also on every `HelpTooltip` button) and `.mm-warning`. The bubble is still `.mm-help-tip` / `.mm-help-arrow` for all three.
 - **Added** `@jamiehales/ui-kit/mostlymaking`: `LinkToggle` (a lock toggle on Radix Toggle: `pressed`, `onPressedChange`), `LinkedPair` (rows joined by a bracket with a `LinkToggle` on it: `linked`, `onLinkedChange`, `label`, `linkedHint`, `unlinkedHint`, `firstAnchor`, `lastAnchor`) and `SplitBar` (a bar split into segments that share a fixed total: `values`, `onValueChange`, `selectedIndex`, `onSelect`, `disabled`, `reversed`, `step`, `renderSegment`, `segmentTitle`, `dividerLabel`), plus the pure helpers `moveSplitDivider` and `moveSplitSegment`.
 - **Added** `@jamiehales/ui-kit/mostlymaking.css`: `.mm-link-toggle`, `.mm-linked*` and `.mm-split*` styles, and the `--mm-link-top` / `--mm-link-bottom` variables `LinkedPair` sets.
 

@@ -31,6 +31,7 @@ import {
   DialogTrigger,
   HelpTooltip,
   IconButton,
+  IconTooltip,
   Input,
   Label,
   LinkedPair,
@@ -69,6 +70,7 @@ import {
   Toast,
   ToastProvider,
   Tooltip,
+  WarningTooltip,
   moveSplitDivider,
   moveSplitSegment,
 } from "../src/mostlymaking";
@@ -332,6 +334,28 @@ describe("mostlymaking controls", () => {
     expect(storageHeader.getAttribute("aria-expanded")).toBe("true");
     expect(exportHeader.getAttribute("aria-expanded")).toBe("false");
     expect(onValueChange).toHaveBeenLastCalledWith("storage");
+  });
+
+  it("Accordion marks when the trailing divider is turned off", () => {
+    const { container, rerender } = render(
+      <Accordion type="single" collapsible variant="minimal">
+        <AccordionItem value="advanced">
+          <AccordionTrigger>Advanced</AccordionTrigger>
+          <AccordionContent>Body</AccordionContent>
+        </AccordionItem>
+      </Accordion>,
+    );
+    const root = container.querySelector(".mm-acc");
+    expect(root?.hasAttribute("data-trailing-divider")).toBe(false);
+    rerender(
+      <Accordion type="single" collapsible variant="minimal" trailingDivider={false}>
+        <AccordionItem value="advanced">
+          <AccordionTrigger>Advanced</AccordionTrigger>
+          <AccordionContent>Body</AccordionContent>
+        </AccordionItem>
+      </Accordion>,
+    );
+    expect(container.querySelector(".mm-acc")?.getAttribute("data-trailing-divider")).toBe("false");
   });
 
   it("Accordion minimal shows the meta", () => {
@@ -601,6 +625,27 @@ describe("HelpTooltip", () => {
     fireEvent.click(screen.getByRole("button", { name: "About" }));
     fireEvent.keyDown(document.activeElement ?? document.body, { key: "Escape" });
     expect(screen.queryByText("Help text")).toBeNull();
+  });
+});
+
+describe("IconTooltip", () => {
+  it("shows the given icon and opens its bubble on focus", () => {
+    render(<IconTooltip icon={<span data-testid="icon">!</span>} aria-label="About supports" content="Hollow the model first." />);
+    const trigger = screen.getByRole("button", { name: "About supports" });
+    expect(screen.getByTestId("icon")).toBeTruthy();
+    fireEvent.focus(trigger);
+    expect(screen.getByText("Hollow the model first.")).toBeTruthy();
+  });
+});
+
+describe("WarningTooltip", () => {
+  it("draws a warning icon and pins open on click", () => {
+    render(<WarningTooltip aria-label="Hollowing recommended" content="Hollow the model to cut pull forces." />);
+    const trigger = screen.getByRole("button", { name: "Hollowing recommended" });
+    expect(trigger.classList.contains("mm-warning")).toBe(true);
+    expect(trigger.querySelector("svg")).toBeTruthy();
+    fireEvent.click(trigger);
+    expect(screen.getByText("Hollow the model to cut pull forces.")).toBeTruthy();
   });
 });
 

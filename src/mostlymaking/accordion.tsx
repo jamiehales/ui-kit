@@ -14,13 +14,22 @@ export type AccordionVariant = "plain" | "cards" | "minimal";
 
 const VariantContext = createContext<AccordionVariant>("plain");
 
-export type AccordionProps = ComponentProps<typeof AccordionPrimitive.Root> & { variant?: AccordionVariant };
+export type AccordionProps = ComponentProps<typeof AccordionPrimitive.Root> & {
+  variant?: AccordionVariant;
+  /** Draw the divider under the last item (`plain` and `minimal`). Turn off when a separator already follows the accordion. */
+  trailingDivider?: boolean;
+};
 
 /** Root: `type` ("single" | "multiple"), `value`, `defaultValue`, `onValueChange`, `collapsible`. */
-export function Accordion({ variant = "plain", className, ...props }: AccordionProps) {
+export function Accordion({ variant = "plain", trailingDivider = true, className, ...props }: AccordionProps) {
   return (
     <VariantContext.Provider value={variant}>
-      <AccordionPrimitive.Root className={cx("mm-acc", className)} data-variant={variant} {...props} />
+      <AccordionPrimitive.Root
+        className={cx("mm-acc", className)}
+        data-variant={variant}
+        data-trailing-divider={trailingDivider ? undefined : "false"}
+        {...props}
+      />
     </VariantContext.Provider>
   );
 }

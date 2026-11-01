@@ -80,7 +80,14 @@ export {
   type ToastProps,
   type ToastAction,
 } from "./feedback";
-export { HelpTooltip, type HelpTooltipProps } from "./help-tooltip";
+export {
+  IconTooltip,
+  HelpTooltip,
+  WarningTooltip,
+  type IconTooltipProps,
+  type HelpTooltipProps,
+  type WarningTooltipProps,
+} from "./help-tooltip";
 export { Menu, MenuTrigger, MenuContent, MenuItem, MenuCheckboxItem, MenuRadioGroup, MenuRadioItem, MenuLabel, MenuSeparator, type MenuItemProps } from "./menu";
 export {
   Dialog,

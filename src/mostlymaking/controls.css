@@ -957,6 +957,9 @@
   .mm-acc[data-variant="minimal"] .mm-acc-item {
     border-bottom: 1px solid var(--border);
   }
+  .mm-acc[data-trailing-divider="false"] .mm-acc-item:last-child {
+    border-bottom: 0;
+  }
   .mm-acc[data-variant="minimal"] .mm-acc-h {
     padding-left: 0;
   }
@@ -1081,33 +1084,50 @@
     box-shadow: 4px 4px 0 var(--mm-shadow-soft);
   }
 
-  /* HelpTooltip ------------------------------------------------------------- */
-  .mm-help {
+  /* IconTooltip, HelpTooltip, WarningTooltip ---------------------------------- */
+  .mm-icon-tip {
     display: inline-grid;
     place-items: center;
-    width: 18px;
-    height: 18px;
     flex: none;
     padding: 0;
-    border: 1px solid var(--input);
-    border-radius: var(--radius-full);
+    border: 0;
     background: none;
     color: var(--muted-foreground);
-    font: 600 11px/1 var(--font-sans);
     vertical-align: middle;
     cursor: help;
     transition:
       color var(--mm-t) ease-out,
       border-color var(--mm-t) ease-out;
   }
-  .mm-help:hover,
-  .mm-help[data-state="open"] {
+  .mm-icon-tip:hover,
+  .mm-icon-tip[data-state="open"] {
     color: var(--foreground);
-    border-color: var(--muted-foreground);
   }
-  .mm-help:focus-visible {
+  .mm-icon-tip:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+  .mm-help {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-full);
+    font: 600 11px/1 var(--font-sans);
+  }
+  .mm-help:hover,
+  .mm-help[data-state="open"] {
+    border-color: var(--muted-foreground);
+  }
+  .mm-warning {
+    width: 22px;
+    height: 22px;
+    border-radius: var(--mm-r-sm);
+    color: var(--brass);
+  }
+  .mm-warning:hover,
+  .mm-warning[data-state="open"] {
+    color: var(--brass);
+    background: var(--mm-secondary-hover);
   }
   .mm-help-tip {
     z-index: 55;
