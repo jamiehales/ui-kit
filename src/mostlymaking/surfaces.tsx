@@ -22,8 +22,16 @@ export function CardTitle({ className, ...props }: ComponentProps<"h3">) {
   return <h3 className={cx("mm-card-title", className)} {...props} />;
 }
 
-export function CardContent({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cx("mm-card-content", className)} {...props} />;
+/** Gap between children when stacked in a column: `sm` 8px, `md` 12px, `lg` 16px. */
+export type StackGap = "sm" | "md" | "lg";
+
+export interface CardContentProps extends ComponentProps<"div"> {
+  /** Lays the children out in a column with this gap. */
+  stack?: StackGap;
+}
+
+export function CardContent({ stack, className, ...props }: CardContentProps) {
+  return <div data-stack={stack} className={cx("mm-card-content", className)} {...props} />;
 }
 
 export interface CardLinkProps extends ComponentProps<"a"> {
@@ -92,19 +100,23 @@ export function Alert({ tone = "neutral", className, children, ...props }: Alert
   );
 }
 
+const SPINNER_SIZES = { xs: 12, sm: 14, md: 16, lg: 24 } as const;
+
 export interface SpinnerProps extends ComponentProps<"svg"> {
   /** Read out while loading. */
   label?: string;
+  /** `xs` 12px, `sm` 14px (inside a small Button), `md` 16px, `lg` 24px (a page or panel loading). */
+  size?: keyof typeof SPINNER_SIZES;
 }
 
-/** 16px loading ring in currentColor; size it with width/height or a class. */
-export function Spinner({ label = "Loading", className, ...props }: SpinnerProps) {
+/** Loading ring in currentColor. */
+export function Spinner({ label = "Loading", size = "md", className, ...props }: SpinnerProps) {
   return (
     <svg
       role="status"
       aria-label={label}
-      width="16"
-      height="16"
+      width={SPINNER_SIZES[size]}
+      height={SPINNER_SIZES[size]}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

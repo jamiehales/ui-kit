@@ -15,16 +15,21 @@ export const DialogTrigger = DialogPrimitive.Trigger;
 /** Closes the surrounding Dialog; wrap a Button with it (`asChild`). */
 export const DialogClose = DialogPrimitive.Close;
 
+export interface DialogContentProps extends ComponentProps<typeof DialogPrimitive.Content> {
+  /** Panel width, capped by the screen: `sm` 340px (confirmations), `md` 560px (forms, help), `lg` 1000px (previews, pickers). */
+  size?: "sm" | "md" | "lg";
+}
+
 /**
  * The panel, over a dimmed overlay. Needs a DialogTitle (visually hidden with
  * `className="sr-only"` if the design has none). Pass `aria-describedby={undefined}`
  * when there is no DialogDescription.
  */
-export function DialogContent({ className, ...props }: ComponentProps<typeof DialogPrimitive.Content>) {
+export function DialogContent({ size = "sm", className, ...props }: DialogContentProps) {
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="mm-overlay" />
-      <DialogPrimitive.Content className={cx("mm-dialog", className)} {...props} />
+      <DialogPrimitive.Content data-size={size} className={cx("mm-dialog", className)} {...props} />
     </DialogPrimitive.Portal>
   );
 }
@@ -38,9 +43,14 @@ export function DialogDescription({ className, ...props }: ComponentProps<typeof
   return <DialogPrimitive.Description className={cx("mm-dialog-body", className)} {...props} />;
 }
 
+export interface DialogFooterProps extends ComponentProps<"div"> {
+  /** `between` puts a secondary action on the left and the main ones on the right. */
+  align?: "end" | "between";
+}
+
 /** Buttons, right-aligned: ghost Cancel, then the action. */
-export function DialogFooter({ className, ...props }: ComponentProps<"div">) {
-  return <div className={cx("mm-btn-row", className)} data-align="end" {...props} />;
+export function DialogFooter({ align = "end", className, ...props }: DialogFooterProps) {
+  return <div className={cx("mm-btn-row", className)} data-align={align} {...props} />;
 }
 
 /** Root: `open`, `defaultOpen`, `onOpenChange`. A Dialog docked to an edge, for filters and previews on phones. */

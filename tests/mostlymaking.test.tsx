@@ -146,6 +146,17 @@ describe("mostlymaking controls", () => {
     expect(link.hasAttribute("type")).toBe(false);
   });
 
+  it("Button marks full width and destructive styling", () => {
+    render(
+      <Button variant="ghost" fullWidth destructive>
+        Delete
+      </Button>,
+    );
+    const button = screen.getByRole("button", { name: "Delete" });
+    expect(button.hasAttribute("data-full-width")).toBe(true);
+    expect(button.hasAttribute("data-destructive")).toBe(true);
+  });
+
   it("IconButton is marked for the square layout", () => {
     render(<IconButton aria-label="More">…</IconButton>);
     expect(screen.getByRole("button", { name: "More" }).hasAttribute("data-icon")).toBe(true);
@@ -254,6 +265,39 @@ describe("mostlymaking controls", () => {
     expect(onValueChange).toHaveBeenCalledWith("list");
     fireEvent.click(screen.getByRole("radio", { name: "List" }));
     expect(screen.getByRole("radio", { name: "List" }).dataset.state).toBe("on");
+  });
+
+  it("SegmentedControl takes a size, full width and stacked or icon items", () => {
+    render(
+      <SegmentedControl aria-label="Shape" defaultValue="d6" size="sm" fullWidth>
+        <SegmentedControlItem value="d6" layout="stacked">
+          d6
+        </SegmentedControlItem>
+        <SegmentedControlItem value="grid" icon aria-label="Grid">
+          ▦
+        </SegmentedControlItem>
+      </SegmentedControl>,
+    );
+    const group = screen.getByRole("radio", { name: "d6" }).parentElement!;
+    expect(group.dataset.size).toBe("sm");
+    expect(group.hasAttribute("data-full-width")).toBe(true);
+    expect(screen.getByRole("radio", { name: "d6" }).dataset.layout).toBe("stacked");
+    expect(screen.getByRole("radio", { name: "Grid" }).hasAttribute("data-icon")).toBe(true);
+  });
+
+  it("small fields and select triggers are marked", () => {
+    render(
+      <>
+        <Input aria-label="Tag" size="sm" />
+        <Select>
+          <SelectTrigger aria-label="Sort" size="sm">
+            <SelectValue />
+          </SelectTrigger>
+        </Select>
+      </>,
+    );
+    expect(screen.getByRole("textbox", { name: "Tag" }).dataset.size).toBe("sm");
+    expect(screen.getByRole("combobox", { name: "Sort" }).dataset.size).toBe("sm");
   });
 
   it("ChipGroup toggles several chips", () => {
@@ -383,6 +427,11 @@ describe("mostlymaking controls", () => {
     expect(title.closest(".mm-card")?.getAttribute("data-size")).toBe("sm");
   });
 
+  it("CardContent stacks its children with a gap", () => {
+    render(<CardContent stack="md">Rows</CardContent>);
+    expect(screen.getByText("Rows").dataset.stack).toBe("md");
+  });
+
   it("Alert announces errors", () => {
     render(<Alert tone="error">Could not save. Try again.</Alert>);
     expect(screen.getByRole("alert").textContent).toBe("Could not save. Try again.");
@@ -390,7 +439,12 @@ describe("mostlymaking controls", () => {
 
   it("Spinner is a labelled status", () => {
     render(<Spinner />);
-    expect(screen.getByRole("status", { name: "Loading" })).toBeTruthy();
+    expect(screen.getByRole("status", { name: "Loading" }).getAttribute("width")).toBe("16");
+  });
+
+  it("Spinner takes a size", () => {
+    render(<Spinner size="lg" />);
+    expect(screen.getByRole("status", { name: "Loading" }).getAttribute("width")).toBe("24");
   });
 
   it("Progress is indeterminate without a value", () => {
@@ -513,6 +567,21 @@ describe("mostlymaking controls", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(onOpenChange).toHaveBeenLastCalledWith(false);
     expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("Dialog takes a size and the footer can spread its buttons", () => {
+    render(
+      <Dialog open>
+        <DialogContent size="md" aria-describedby={undefined}>
+          <DialogTitle>Help</DialogTitle>
+          <DialogFooter align="between">
+            <Button>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>,
+    );
+    expect(screen.getByRole("dialog", { name: "Help" }).dataset.size).toBe("md");
+    expect(screen.getByRole("button", { name: "Close" }).parentElement?.dataset.align).toBe("between");
   });
 
   it("ConfirmDialog confirms or cancels", () => {

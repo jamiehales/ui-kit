@@ -13,8 +13,10 @@ export {
   SelectValue,
   SelectContent,
   SelectItem,
+  type FieldSize,
   type InputProps,
   type TextareaProps,
+  type SelectTriggerProps,
   type LabelProps,
   type SearchFieldProps,
 } from "./fields";
@@ -34,6 +36,7 @@ export {
   type RadioGroupProps,
   type SwitchProps,
   type SegmentedControlProps,
+  type SegmentedControlItemProps,
   type ChipGroupProps,
   type SliderProps,
 } from "./selection";
@@ -45,6 +48,7 @@ export {
   AccordionContent,
   type AccordionProps,
   type AccordionTriggerProps,
+  type AccordionContentProps,
   type AccordionVariant,
 } from "./accordion";
 export {
@@ -59,6 +63,8 @@ export {
   Spinner,
   Separator,
   type CardProps,
+  type CardContentProps,
+  type StackGap,
   type CardLinkProps,
   type CardImageProps,
   type CardRevealProps,
@@ -107,6 +113,8 @@ export {
   SheetTitle,
   SheetDescription,
   type ConfirmDialogProps,
+  type DialogContentProps,
+  type DialogFooterProps,
   type SheetContentProps,
 } from "./dialog";
 export { LinkToggle, LinkedPair, type LinkToggleProps, type LinkedPairProps } from "./linked";

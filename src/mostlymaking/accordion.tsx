@@ -4,6 +4,7 @@ import { createContext, useContext, type ComponentProps, type ReactNode } from "
 import { Accordion as AccordionPrimitive } from "radix-ui";
 import { cx } from "./cx";
 import { ChevronDownIcon } from "./icons";
+import type { StackGap } from "./surfaces";
 
 /**
  * - `plain`: hairline-separated rows with a chevron.
@@ -69,10 +70,17 @@ export function AccordionTrigger({ meta, className, children, ...props }: Accord
   );
 }
 
-export function AccordionContent({ className, children, ...props }: ComponentProps<typeof AccordionPrimitive.Content>) {
+export interface AccordionContentProps extends ComponentProps<typeof AccordionPrimitive.Content> {
+  /** Lays the children out in a column with this gap. */
+  stack?: StackGap;
+}
+
+export function AccordionContent({ stack, className, children, ...props }: AccordionContentProps) {
   return (
     <AccordionPrimitive.Content className="mm-acc-body" {...props}>
-      <div className={cx("mm-acc-in", className)}>{children}</div>
+      <div data-stack={stack} className={cx("mm-acc-in", className)}>
+        {children}
+      </div>
     </AccordionPrimitive.Content>
   );
 }

@@ -148,6 +148,10 @@ export interface SegmentedControlProps {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
+  /** `sm` is 30px tall, for dense toolbars and forms. */
+  size?: "md" | "sm";
+  /** Stretches to the width of its container and shares it equally between the segments. */
+  fullWidth?: boolean;
   "aria-label"?: string;
   className?: string;
   /** SegmentedControlItem elements. */
@@ -155,7 +159,16 @@ export interface SegmentedControlProps {
 }
 
 /** A view switch ("Grid", "List", "Board"); use Tabs when it swaps a panel. Always keeps one segment on. */
-export function SegmentedControl({ value, defaultValue, onValueChange, className, children, ...props }: SegmentedControlProps) {
+export function SegmentedControl({
+  value,
+  defaultValue,
+  onValueChange,
+  size = "md",
+  fullWidth = false,
+  className,
+  children,
+  ...props
+}: SegmentedControlProps) {
   const [current, setCurrent] = useControllable<string | undefined>(value, defaultValue, onValueChange as (v: string | undefined) => void);
   const listRef = useRef<HTMLDivElement>(null);
   const indicator = useIndicator(listRef);
@@ -169,6 +182,8 @@ export function SegmentedControl({ value, defaultValue, onValueChange, className
         if (next) setCurrent(next);
       }}
       className={cx("mm-seg", className)}
+      data-size={size}
+      data-full-width={fullWidth ? "" : undefined}
       data-anim={indicator.anim}
       style={indicator.style}
       {...props}
@@ -179,8 +194,22 @@ export function SegmentedControl({ value, defaultValue, onValueChange, className
   );
 }
 
-export function SegmentedControlItem({ className, ...props }: ComponentProps<typeof ToggleGroup.Item>) {
-  return <ToggleGroup.Item className={cx("mm-seg-b", className)} {...props} />;
+export interface SegmentedControlItemProps extends ComponentProps<typeof ToggleGroup.Item> {
+  /** `stacked` puts an icon above a short caption, for picking between shapes. */
+  layout?: "inline" | "stacked";
+  /** Square, icon-only segment; give it an `aria-label`. */
+  icon?: boolean;
+}
+
+export function SegmentedControlItem({ layout = "inline", icon = false, className, ...props }: SegmentedControlItemProps) {
+  return (
+    <ToggleGroup.Item
+      data-layout={layout}
+      data-icon={icon ? "" : undefined}
+      className={cx("mm-seg-b", className)}
+      {...props}
+    />
+  );
 }
 
 export type ChipGroupProps = ComponentProps<typeof ToggleGroup.Root>;

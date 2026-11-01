@@ -107,6 +107,9 @@
   .mm-btn[data-icon][data-size="sm"] {
     width: 32px;
   }
+  .mm-btn[data-full-width] {
+    width: 100%;
+  }
 
   .mm-btn[data-variant="primary"] {
     background-color: var(--primary);
@@ -193,6 +196,9 @@
   .mm-btn-row[data-align="end"] {
     justify-content: flex-end;
   }
+  .mm-btn-row[data-align="between"] {
+    justify-content: space-between;
+  }
 
   /* Text fields ------------------------------------------------------------- */
   .mm-form-field {
@@ -243,6 +249,11 @@
     cursor: not-allowed;
     box-shadow: none;
   }
+  .mm-field[data-size="sm"] {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
   .mm-seg[data-disabled] {
     opacity: 0.4;
     cursor: not-allowed;
@@ -256,6 +267,12 @@
     font-size: 14px;
     line-height: 20px;
     resize: vertical;
+  }
+  textarea.mm-field[data-size="sm"] {
+    height: auto;
+    padding: 6px 10px;
+    font-size: 13px;
+    line-height: 18px;
   }
   select.mm-field {
     appearance: none;
@@ -282,6 +299,13 @@
   }
   .mm-search > .mm-field {
     padding-left: 36px;
+  }
+  .mm-search[data-size="sm"] > svg {
+    left: 10px;
+    top: 8px;
+  }
+  .mm-search[data-size="sm"] > .mm-field {
+    padding-left: 32px;
   }
 
   /* Checkbox and radio ------------------------------------------------------ */
@@ -513,6 +537,10 @@
   .mm-seg-b {
     position: relative;
     z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     min-width: 76px;
     height: 30px;
     padding: 0 12px;
@@ -531,6 +559,41 @@
   .mm-seg-b[data-state="on"],
   .mm-seg-b[aria-selected="true"] {
     color: var(--foreground);
+  }
+  .mm-seg-b[data-layout="stacked"] {
+    height: auto;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    font-size: 11px;
+  }
+  .mm-seg-b[data-icon] {
+    min-width: 40px;
+    padding: 0;
+  }
+  .mm-seg[data-size="sm"] {
+    padding: 2px;
+  }
+  .mm-seg[data-size="sm"] .mm-seg-ind {
+    top: 2px;
+    height: calc(100% - 4px);
+  }
+  .mm-seg[data-size="sm"] .mm-seg-b {
+    height: 24px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+  .mm-seg[data-size="sm"] .mm-seg-b[data-icon] {
+    min-width: 32px;
+    padding: 0;
+  }
+  .mm-seg[data-full-width] {
+    display: flex;
+    width: 100%;
+  }
+  .mm-seg[data-full-width] > .mm-seg-b {
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   /* Slider ------------------------------------------------------------------ */
@@ -1333,6 +1396,12 @@
     font-family: var(--font-sans);
     transform: translate(-50%, -50%);
   }
+  .mm-dialog[data-size="md"] {
+    width: min(560px, calc(100vw - 32px));
+  }
+  .mm-dialog[data-size="lg"] {
+    width: min(1000px, calc(100vw - 32px));
+  }
   .mm-dialog:focus-visible {
     outline: none;
   }
@@ -1494,6 +1563,24 @@
   .mm-stack[data-gap="sm"] {
     gap: 8px;
   }
+  /* CardContent / AccordionContent `stack`. */
+  .mm-card-content[data-stack],
+  .mm-acc-in[data-stack] {
+    display: flex;
+    flex-direction: column;
+  }
+  .mm-card-content[data-stack="sm"],
+  .mm-acc-in[data-stack="sm"] {
+    gap: 8px;
+  }
+  .mm-card-content[data-stack="md"],
+  .mm-acc-in[data-stack="md"] {
+    gap: 12px;
+  }
+  .mm-card-content[data-stack="lg"],
+  .mm-acc-in[data-stack="lg"] {
+    gap: 16px;
+  }
   .mm-muted {
     margin: 0;
     font: 400 13px/18px var(--font-sans);
@@ -1574,6 +1661,9 @@
   .mm-btn[data-variant="link"]:not(:disabled, [aria-disabled="true"]):active {
     transform: none;
     box-shadow: none;
+  }
+  .mm-btn[data-destructive]:is([data-variant="ghost"], [data-variant="neutral"], [data-variant="link"]) {
+    color: var(--destructive-text);
   }
 
   /* File inputs --------------------------------------------------------------- */

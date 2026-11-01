@@ -11,13 +11,27 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   /** Square, icon-only button; give it an `aria-label`. */
   icon?: boolean;
+  /** Stretches to the width of its container. */
+  fullWidth?: boolean;
+  /** Red text for a quiet `ghost`, `neutral` or `link` button that deletes or cancels something. */
+  destructive?: boolean;
   /** Render the single child (e.g. next/link's `<Link>`) with the button's styling. */
   asChild?: boolean;
   ref?: Ref<HTMLButtonElement>;
 }
 
 /** One or two words that say what happens: "Export", "New board", "Delete". */
-export function Button({ variant = "neutral", size = "md", icon = false, type, asChild = false, className, ...props }: ButtonProps) {
+export function Button({
+  variant = "neutral",
+  size = "md",
+  icon = false,
+  fullWidth = false,
+  destructive = false,
+  type,
+  asChild = false,
+  className,
+  ...props
+}: ButtonProps) {
   const Comp = asChild ? Slot.Root : "button";
   return (
     <Comp
@@ -25,6 +39,8 @@ export function Button({ variant = "neutral", size = "md", icon = false, type, a
       data-variant={variant}
       data-size={size}
       data-icon={icon ? "" : undefined}
+      data-full-width={fullWidth ? "" : undefined}
+      data-destructive={destructive ? "" : undefined}
       className={cx("mm-btn", className)}
       {...props}
     />
@@ -42,8 +58,8 @@ export function IconButton(props: IconButtonProps) {
 }
 
 export interface ButtonRowProps extends HTMLAttributes<HTMLDivElement> {
-  /** `end` for dialog footers (Cancel, then the action). */
-  align?: "start" | "end";
+  /** `end` for dialog footers (Cancel, then the action); `between` pushes the first and last buttons to the edges. */
+  align?: "start" | "end" | "between";
 }
 
 export function ButtonRow({ align = "start", className, ...props }: ButtonRowProps) {

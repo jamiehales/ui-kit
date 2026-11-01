@@ -5,19 +5,25 @@ import { Label as LabelPrimitive, Select as SelectPrimitive } from "radix-ui";
 import { cx } from "./cx";
 import { CheckIcon, ChevronDownIcon, SearchIcon } from "./icons";
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+/** `sm` is 32px tall, to sit beside a small Button. */
+export type FieldSize = "md" | "sm";
+
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  size?: FieldSize;
   ref?: Ref<HTMLInputElement>;
 }
 
 /** Text, number, URL, file… Set `aria-invalid` to show the error border. */
-export function Input({ className, type = "text", ...props }: InputProps) {
-  return <input type={type} className={cx("mm-field", className)} {...props} />;
+export function Input({ className, type = "text", size = "md", ...props }: InputProps) {
+  return <input type={type} data-size={size} className={cx("mm-field", className)} {...props} />;
 }
 
-export type TextareaProps = ComponentProps<"textarea">;
+export interface TextareaProps extends ComponentProps<"textarea"> {
+  size?: FieldSize;
+}
 
-export function Textarea({ className, rows = 3, ...props }: TextareaProps) {
-  return <textarea rows={rows} className={cx("mm-field", className)} {...props} />;
+export function Textarea({ className, rows = 3, size = "md", ...props }: TextareaProps) {
+  return <textarea rows={rows} data-size={size} className={cx("mm-field", className)} {...props} />;
 }
 
 export type LabelProps = ComponentProps<typeof LabelPrimitive.Root>;
@@ -37,11 +43,11 @@ export interface SearchFieldProps extends Omit<InputProps, "type"> {
   "aria-label": string;
 }
 
-export function SearchField({ className, style, ...props }: SearchFieldProps) {
+export function SearchField({ className, style, size = "md", ...props }: SearchFieldProps) {
   return (
-    <div className={cx("mm-search", className)} style={style}>
+    <div className={cx("mm-search", className)} data-size={size} style={style}>
       <SearchIcon />
-      <Input type="search" {...props} />
+      <Input type="search" size={size} {...props} />
     </div>
   );
 }
@@ -49,9 +55,13 @@ export function SearchField({ className, style, ...props }: SearchFieldProps) {
 /** Root: `value`, `defaultValue`, `onValueChange`, `name`, `required`, `disabled`. */
 export const Select = SelectPrimitive.Root;
 
-export function SelectTrigger({ className, children, ...props }: ComponentProps<typeof SelectPrimitive.Trigger>) {
+export interface SelectTriggerProps extends ComponentProps<typeof SelectPrimitive.Trigger> {
+  size?: FieldSize;
+}
+
+export function SelectTrigger({ className, children, size = "md", ...props }: SelectTriggerProps) {
   return (
-    <SelectPrimitive.Trigger className={cx("mm-field mm-select", className)} {...props}>
+    <SelectPrimitive.Trigger data-size={size} className={cx("mm-field mm-select", className)} {...props}>
       {children}
       <SelectPrimitive.Icon className="mm-select-icon">
         <ChevronDownIcon />
