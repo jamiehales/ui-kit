@@ -9,6 +9,11 @@ Each entry looks like this: `- **Kind** \`entry point\`: what changed. Migration
 - Name the exact symbols, parameters and variables in backticks, both old and new.
 - Leave out the Migration part when an app has nothing to do.
 
+## 2026-11-01
+
+- **Added** `@jamiehales/ui-kit/mostlymaking`: `LinkToggle` (a lock toggle on Radix Toggle: `pressed`, `onPressedChange`), `LinkedPair` (rows joined by a bracket with a `LinkToggle` on it: `linked`, `onLinkedChange`, `label`, `linkedHint`, `unlinkedHint`, `firstAnchor`, `lastAnchor`) and `SplitBar` (a bar split into segments that share a fixed total: `values`, `onValueChange`, `selectedIndex`, `onSelect`, `disabled`, `reversed`, `step`, `renderSegment`, `segmentTitle`, `dividerLabel`), plus the pure helpers `moveSplitDivider` and `moveSplitSegment`.
+- **Added** `@jamiehales/ui-kit/mostlymaking.css`: `.mm-link-toggle`, `.mm-linked*` and `.mm-split*` styles, and the `--mm-link-top` / `--mm-link-bottom` variables `LinkedPair` sets.
+
 ## 2026-10-25
 
 - **Fixed** `@jamiehales/ui-kit/mostlymaking.css`: pressing a button, input or other control inside a `CardLink` (`.mm-card-link`) no longer presses the whole card; only the control plays its press.

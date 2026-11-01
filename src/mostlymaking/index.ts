@@ -102,4 +102,6 @@ export {
   type ConfirmDialogProps,
   type SheetContentProps,
 } from "./dialog";
+export { LinkToggle, LinkedPair, type LinkToggleProps, type LinkedPairProps } from "./linked";
+export { SplitBar, moveSplitDivider, moveSplitSegment, type SplitBarProps } from "./split-bar";
 export { cx } from "./cx";

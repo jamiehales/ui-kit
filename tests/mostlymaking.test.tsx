@@ -33,6 +33,8 @@ import {
   IconButton,
   Input,
   Label,
+  LinkedPair,
+  LinkToggle,
   Menu,
   MenuCheckboxItem,
   MenuContent,
@@ -58,6 +60,7 @@ import {
   SheetTrigger,
   Slider,
   Spinner,
+  SplitBar,
   Switch,
   Tabs,
   TabsContent,
@@ -66,6 +69,8 @@ import {
   Toast,
   ToastProvider,
   Tooltip,
+  moveSplitDivider,
+  moveSplitSegment,
 } from "../src/mostlymaking";
 import { renderTokensCss, TOKENS_CSS, TOKENS_JSON, type DesignTokens } from "../scripts/design-tokens";
 
@@ -660,5 +665,72 @@ describe("MultiSelect", () => {
     fireEvent.click(screen.getByRole("button", { name: "Creator" }));
     fireEvent.click(screen.getByRole("button", { name: "Clear" }));
     expect(screen.getByRole("button", { name: "Creator" }).textContent).toContain("Any");
+  });
+});
+
+describe("LinkedPair", () => {
+  it("toggles the lock and marks the bracket as linked", () => {
+    const onLinkedChange = vi.fn();
+    const { rerender } = render(
+      <LinkedPair linked={false} onLinkedChange={onLinkedChange} label="Link depth to width">
+        <span>Width</span>
+        <span>Depth</span>
+      </LinkedPair>,
+    );
+    const lock = screen.getByRole("button", { name: "Link depth to width" });
+    expect(lock.getAttribute("aria-pressed")).toBe("false");
+    fireEvent.click(lock);
+    expect(onLinkedChange).toHaveBeenCalledWith(true);
+    rerender(
+      <LinkedPair linked onLinkedChange={onLinkedChange} label="Link depth to width" firstAnchor={46} lastAnchor={22}>
+        <span>Width</span>
+        <span>Depth</span>
+      </LinkedPair>,
+    );
+    expect(lock.getAttribute("aria-pressed")).toBe("true");
+    expect(document.querySelector(".mm-linked-link")?.hasAttribute("data-linked")).toBe(true);
+    expect((document.querySelector(".mm-linked") as HTMLElement).style.getPropertyValue("--mm-link-top")).toBe("46px");
+  });
+
+  it("LinkToggle shows its pressed state", () => {
+    render(<LinkToggle pressed onPressedChange={() => {}} aria-label="Lock" />);
+    expect(screen.getByRole("button", { name: "Lock" }).className).toContain("mm-link-toggle");
+  });
+});
+
+describe("SplitBar", () => {
+  it("moves a divider with the arrow keys, keeping the total", () => {
+    const onValueChange = vi.fn();
+    render(<SplitBar label="Height" values={[20, 60, 20]} onValueChange={onValueChange} dividerLabel={(index) => `Divider ${index}`} />);
+    fireEvent.keyDown(screen.getByRole("slider", { name: "Divider 0" }), { key: "ArrowRight" });
+    const next = onValueChange.mock.calls[0][0] as number[];
+    expect(next.map((value) => Math.round(value))).toEqual([21, 59, 20]);
+  });
+
+  it("draws reversed bars from the end and flips the keys", () => {
+    const onValueChange = vi.fn();
+    render(<SplitBar label="Height" values={[20, 60, 20]} onValueChange={onValueChange} reversed dividerLabel={(index) => `Divider ${index}`} />);
+    const divider = screen.getByRole("slider", { name: "Divider 0" });
+    expect(divider.getAttribute("aria-valuenow")).toBe("80");
+    fireEvent.keyDown(divider, { key: "ArrowRight" });
+    expect((onValueChange.mock.calls[0][0] as number[]).map((value) => Math.round(value))).toEqual([19, 61, 20]);
+  });
+
+  it("is inert while disabled", () => {
+    render(<SplitBar label="Depth" values={[50, 50]} onValueChange={() => {}} disabled />);
+    expect(document.querySelector(".mm-split")?.hasAttribute("data-disabled")).toBe(true);
+    expect(screen.getByRole("slider").getAttribute("tabindex")).toBe("-1");
+  });
+
+  it("moveSplitSegment scales each side evenly and returns to the start", () => {
+    const start = [20, 60, 20];
+    expect(moveSplitSegment(start, 1, 10).map((value) => Math.round(value))).toEqual([30, 60, 10]);
+    expect(moveSplitSegment(start, 1, 0)).toBe(start);
+    expect(moveSplitSegment([0, 80, 20], 1, 10)).toEqual([10, 80, 10]);
+  });
+
+  it("moveSplitDivider trades size with the neighbour only", () => {
+    expect(moveSplitDivider([20, 60, 20], 0, 0.5).map((value) => Math.round(value))).toEqual([50, 30, 20]);
+    expect(moveSplitDivider([20, 60, 20], 0, 0.95).map((value) => Math.round(value))).toEqual([80, 0, 20]);
   });
 });

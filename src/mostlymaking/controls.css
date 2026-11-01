@@ -1785,6 +1785,158 @@
     color: var(--muted-foreground);
   }
 
+  /* LinkToggle, LinkedPair ------------------------------------------------- */
+  .mm-link-toggle {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--mm-edge);
+    border-radius: var(--mm-r-sm);
+    background-color: var(--card);
+    color: var(--foreground);
+    box-shadow: 2px 2px 0 var(--mm-shadow);
+    cursor: pointer;
+    transition:
+      transform var(--mm-t) ease-out,
+      box-shadow var(--mm-t) ease-out,
+      background-color var(--mm-t) ease-out;
+  }
+  .mm-link-toggle:hover {
+    background-color: var(--popover);
+    box-shadow: 4px 4px 0 var(--mm-shadow);
+    transform: var(--mm-lift);
+  }
+  .mm-link-toggle[aria-pressed="true"],
+  .mm-link-toggle[aria-pressed="true"]:hover {
+    background-color: var(--secondary);
+    color: var(--brass);
+    box-shadow: none;
+    transform: var(--mm-press);
+  }
+  .mm-link-toggle:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .mm-link-toggle:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .mm-linked {
+    display: flex;
+    gap: 6px;
+  }
+  .mm-linked-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+  .mm-linked-link {
+    position: relative;
+    width: 32px;
+    flex-shrink: 0;
+  }
+  .mm-linked-bracket {
+    position: absolute;
+    top: var(--mm-link-top, 20px);
+    bottom: var(--mm-link-bottom, 20px);
+    left: 0;
+    right: 15px;
+    border: 1.5px dashed var(--border);
+    border-left: 0;
+    border-radius: 0 var(--mm-r) var(--mm-r) 0;
+  }
+  .mm-linked-link[data-linked] .mm-linked-bracket {
+    border-style: solid;
+    border-color: var(--muted-foreground);
+  }
+  .mm-linked-link .mm-link-toggle {
+    position: absolute;
+    left: 0;
+    top: calc((var(--mm-link-top, 20px) + 100% - var(--mm-link-bottom, 20px)) / 2 - 16px);
+  }
+
+  /* SplitBar ----------------------------------------------------------------- */
+  .mm-split {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .mm-split[data-disabled] {
+    opacity: 0.5;
+  }
+  .mm-split-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 18px;
+    font: 500 12px/18px var(--font-sans);
+    color: var(--foreground);
+  }
+  .mm-split-detail {
+    font: 400 11px/18px var(--font-mono);
+    color: var(--muted-foreground);
+  }
+  .mm-split-track {
+    position: relative;
+    display: flex;
+    height: 44px;
+    border: 1px solid var(--border);
+    border-radius: var(--mm-r-sm);
+    background: var(--background);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+  }
+  .mm-split[data-disabled] .mm-split-track {
+    pointer-events: none;
+  }
+  .mm-split-seg {
+    flex: none;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+    background: var(--secondary);
+    color: var(--muted-foreground);
+    font: 400 11px/1 var(--font-mono);
+    box-shadow: inset -1px 0 0 var(--background);
+  }
+  .mm-split-seg[data-alternate] {
+    background: var(--muted);
+  }
+  .mm-split-seg[data-selected] {
+    background: color-mix(in srgb, var(--brass) 35%, var(--secondary));
+    color: var(--foreground);
+  }
+  .mm-split-seg[data-dragging] {
+    cursor: grabbing;
+    box-shadow: inset 0 0 0 2px var(--brass);
+  }
+  .mm-split-divider {
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    width: 6px;
+    margin-left: -3px;
+    border-radius: 3px;
+    background: var(--muted-foreground);
+    box-shadow: 0 0 0 1px var(--background);
+  }
+  .mm-split-divider[data-active],
+  .mm-split-divider:focus-visible {
+    background: var(--brass);
+    outline: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     [class^="mm-"],
     [class^="mm-"] *,

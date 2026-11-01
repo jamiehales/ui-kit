@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Linked values</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="lib.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+.s .lk{position:relative;width:32px;height:32px;display:inline-grid;place-items:center;padding:0;border:1px solid #0a090b;border-radius:3px;background:#1b1a1d;color:#ecebee;box-shadow:2px 2px 0 #3d3943;cursor:pointer;transition:transform 110ms ease-out,box-shadow 110ms ease-out,background-color 110ms ease-out}
+.s .lk:hover,.s .lk.is-h{background:#232126;box-shadow:4px 4px 0 #3d3943;transform:translate(-2px,-2px)}
+.s .lk.on,.s .lk.on:hover{background:#2a2622;color:#c9a45c;box-shadow:none;transform:translate(2px,2px)}
+.s .lk:focus-visible{outline:2px solid #c9a45c;outline-offset:2px}
+.s .lp{display:flex;gap:6px;width:440px}
+.s .lp-rows{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.s .lp-link{position:relative;width:32px;flex:none}
+.s .lp-br{position:absolute;left:0;right:15px;border:1.5px dashed #34313a;border-left:0;border-radius:0 4px 4px 0}
+.s .lp-link.on .lp-br{border-style:solid;border-color:#a9a5b0}
+.s .lp-link .lk{position:absolute;left:0}
+.s .ls{display:flex;align-items:center;gap:12px;height:40px}
+.s .ls-l{width:72px;flex:none;color:#a9a5b0;font:400 13px/18px 'IBM Plex Sans',sans-serif}
+.s .ls .track{flex:1}
+.s .ls-n{position:relative;width:88px;flex:none}
+.s .ls-n .field{height:40px;padding:0 34px 0 10px;text-align:right;font-size:14px}
+.s .ls-u{position:absolute;top:50%;right:10px;transform:translateY(-50%);color:#a9a5b0;font-size:12px;pointer-events:none}
+.s .ls.off{opacity:.5;pointer-events:none}
+.s .xb{display:flex;flex-direction:column;gap:6px}
+.s .xb.off{opacity:.5}
+.s .xb.off .xb-t{pointer-events:none}
+.s .xb-h{display:flex;justify-content:space-between;min-height:18px;font:500 12px/18px 'IBM Plex Sans',sans-serif;color:#ecebee}
+.s .xb-h span:last-child{font:400 11px/18px 'IBM Plex Mono',monospace;color:#a9a5b0}
+.s .xb-t{position:relative;display:flex;height:44px;border:1px solid #34313a;border-radius:3px;background:#131214;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer}
+.s .xb-s{flex:none;display:flex;align-items:center;justify-content:center;gap:4px;overflow:hidden;background:#2b2528;color:#a9a5b0;font:400 11px/1 'IBM Plex Mono',monospace;box-shadow:inset -1px 0 0 #131214}
+.s .xb-s.alt{background:#3a2f33}
+.s .xb-s.sel{background:#5a4a2e;color:#ecebee}
+.s .xb-s.drag{box-shadow:inset 0 0 0 2px #c9a45c}
+.s .xb-d{position:absolute;top:-5px;bottom:-5px;width:6px;margin-left:-3px;border-radius:3px;background:#a9a5b0;box-shadow:0 0 0 1px #131214;pointer-events:none}
+.s .xb-d.on{background:#c9a45c}
+.s .xb-d.gone{display:none}
+.s .note{margin:0 0 16px;max-width:760px;font:400 14px/20px 'IBM Plex Sans',sans-serif;color:#a9a5b0}
+</style>
+</helmet>
+<div class="s doc" style="width: 1280px; min-height: 1240px; padding: 48px 56px;">
+  <h1 class="doc-h">Linked values</h1>
+  <p class="note">A pair of values where the second can follow the first. A bracket joins the two, with a lock toggle on its spine: solid bracket and pressed, brass lock when linked; dashed bracket and raised, open lock when not. The following value is greyed out while linked.</p>
+
+  <section class="comp"><div class="comp-n">LockToggle</div><div><div class="specs">
+    <div class="spec"><button type="button" class="lk" aria-pressed="false" aria-label="Link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"></rect><path d="M8 11V7a4 4 0 0 1 7.5-2"></path></svg></button><span class="spec-l">Unlinked</span></div>
+    <div class="spec"><button type="button" class="lk is-h" aria-pressed="false" aria-label="Link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"></rect><path d="M8 11V7a4 4 0 0 1 7.5-2"></path></svg></button><span class="spec-l">Hover</span></div>
+    <div class="spec"><button type="button" class="lk on" aria-pressed="true" aria-label="Link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></button><span class="spec-l">Linked (pressed)</span></div>
+  </div></div></section>
+
+  <section class="comp"><div class="comp-n">LinkedPair</div><div><div class="specs">
+    <div class="spec">
+      <div class="lp">
+        <div class="lp-rows">
+          <div class="ls"><span class="ls-l">Width</span><div class="track"><div class="fill" style="width: 15%;"></div><div class="thumb" style="left: 15%;"></div></div><div class="ls-n"><input class="field" value="40" aria-label="Width (mm)" readonly="readonly"><span class="ls-u">mm</span></div></div>
+          <div class="{{pairDepthCls}}"><span class="ls-l">Depth</span><div class="track"><div class="fill" style="width: {{pairDepthPct}}%;"></div><div class="thumb" style="left: {{pairDepthPct}}%;"></div></div><div class="ls-n"><input class="field" value="{{pairDepth}}" aria-label="Depth (mm)" readonly="readonly"><span class="ls-u">mm</span></div></div>
+        </div>
+        <div class="{{pairLinkCls}}">
+          <span class="lp-br" style="top: 20px; bottom: 20px;" aria-hidden="true"></span>
+          <button type="button" class="{{pairLockCls}}" style="top: 29px;" aria-pressed="{{pairPressed}}" aria-label="Link depth to width" title="{{pairTitle}}" onClick="{{togglePair}}">
+            <sc-if value="{{pairLinked}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></sc-if>
+            <sc-if value="{{pairUnlinked}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"></rect><path d="M8 11V7a4 4 0 0 1 7.5-2"></path></svg></sc-if>
+          </button>
+        </div>
+      </div>
+      <span class="spec-l">Sliders · interactive</span>
+    </div>
+  </div></div></section>
+
+  <section class="comp"><div class="comp-n">SplitBar</div><div><div class="specs" style="flex-direction: column; gap: 28px;">
+    <div class="spec">
+      <div class="xb" style="width: 400px;">
+        <div class="xb-h"><span>Height</span><span>6.0 mm</span></div>
+        <div class="xb-t"><div class="xb-s" style="width: 20%;">20%</div><div class="xb-s alt sel" style="width: 60%;">60%</div><div class="xb-s" style="width: 20%;">20%</div><span class="xb-d" style="left: 20%;"></span><span class="xb-d" style="left: 80%;"></span></div>
+      </div>
+      <span class="spec-l">Section selected</span>
+    </div>
+    <div class="spec">
+      <div class="xb" style="width: 400px;">
+        <div class="xb-h"><span>Height</span><span>6.0 mm</span></div>
+        <div class="xb-t"><div class="xb-s" style="width: 32%;">32%</div><div class="xb-s alt" style="width: 48%;">48%</div><div class="xb-s" style="width: 20%;">20%</div><span class="xb-d on" style="left: 32%;"></span><span class="xb-d" style="left: 80%;"></span></div>
+      </div>
+      <span class="spec-l">Dragging a divider: trades size with the neighbour</span>
+    </div>
+    <div class="spec">
+      <div class="xb" style="width: 400px;">
+        <div class="xb-h"><span>Height</span><span>6.0 mm</span></div>
+        <div class="xb-t"><div class="xb-s" style="width: 12%;">12%</div><div class="xb-s alt drag" style="width: 60%;">60%</div><div class="xb-s" style="width: 28%;">28%</div><span class="xb-d" style="left: 12%;"></span><span class="xb-d" style="left: 72%;"></span></div>
+      </div>
+      <span class="spec-l">Dragging a section: each side scales evenly</span>
+    </div>
+    <div class="spec">
+      <div class="lp" style="width: 440px;">
+        <div class="lp-rows">
+          <div class="xb">
+            <div class="xb-h"><span>Height</span><span>6.0 mm</span></div>
+            <div class="xb-t" onPointerDown="{{barH.down}}" onPointerMove="{{barH.move}}" onPointerUp="{{barH.up}}" onPointerCancel="{{barH.up}}">
+              <sc-for list="{{barH.segs}}" as="sg" hint-placeholder-count="3"><div class="{{sg.cls}}" style="width: {{sg.pct}}%;">{{sg.label}}</div></sc-for>
+              <sc-for list="{{barH.handles}}" as="hd" hint-placeholder-count="2"><span class="{{hd.cls}}" style="left: {{hd.pct}}%;"></span></sc-for>
+            </div>
+          </div>
+          <div class="{{barDCls}}">
+            <div class="xb-h"><span>Depth</span><span>6.0 mm</span></div>
+            <div class="xb-t" onPointerDown="{{barD.down}}" onPointerMove="{{barD.move}}" onPointerUp="{{barD.up}}" onPointerCancel="{{barD.up}}">
+              <sc-for list="{{barD.segs}}" as="sg" hint-placeholder-count="3"><div class="{{sg.cls}}" style="width: {{sg.pct}}%;">{{sg.label}}</div></sc-for>
+              <sc-for list="{{barD.handles}}" as="hd" hint-placeholder-count="2"><span class="{{hd.cls}}" style="left: {{hd.pct}}%;"></span></sc-for>
+            </div>
+          </div>
+        </div>
+        <div class="{{barsLinkCls}}">
+          <span class="lp-br" style="top: 46px; bottom: 22px;" aria-hidden="true"></span>
+          <button type="button" class="{{barsLockCls}}" style="top: 69px;" aria-pressed="{{barsPressed}}" aria-label="Link depth split to height split" title="{{barsTitle}}" onClick="{{toggleBars}}">
+            <sc-if value="{{barsLinked}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg></sc-if>
+            <sc-if value="{{barsUnlinked}}" hint-placeholder-val="{{false}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"></rect><path d="M8 11V7a4 4 0 0 1 7.5-2"></path></svg></sc-if>
+          </button>
+        </div>
+      </div>
+      <span class="spec-l">Linked split bars · interactive: drag dividers, toggle the lock</span>
+    </div>
+  </div></div></section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const pairLinked = st.pairLinked !== false;
+    const barsLinked = st.barsLinked !== false;
+    const heights = st.heights || [20, 60, 20];
+    const depths = barsLinked ? heights : (st.depths || [35, 45, 20]);
+    const lockCls = (on) => 'lk' + (on ? ' on' : '');
+    const makeBar = (key, values, enabled) => {
+      const ends = [];
+      values.reduce((acc, v) => { ends.push(acc + v); return acc + v; }, 0);
+      const drag = st.drag && st.drag.key === key ? st.drag : null;
+      const toPos = (e) => { const r = e.currentTarget.getBoundingClientRect(); return Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100)); };
+      const set = (next) => {
+        if (key === 'h') this.setState({ heights: next, depths: barsLinked ? next : depths });
+        else this.setState({ depths: next });
+      };
+      return {
+        segs: values.map((v, k) => ({ pct: v.toFixed(2), label: Math.round(v) + '%', cls: 'xb-s' + (k % 2 ? ' alt' : '') })),
+        handles: ends.slice(0, -1).map((v, k) => ({ pct: v.toFixed(2), cls: 'xb-d' + (drag && drag.k === k ? ' on' : '') })),
+        down: (e) => {
+          if (!enabled) return;
+          const pos = toPos(e);
+          const r = e.currentTarget.getBoundingClientRect();
+          let best = -1, bestDist = Infinity;
+          ends.slice(0, -1).forEach((v, k) => { const d = Math.abs(((v - pos) / 100) * r.width); if (d < bestDist) { best = k; bestDist = d; } });
+          if (best < 0 || bestDist > 18) return;
+          if (e.currentTarget.setPointerCapture) e.currentTarget.setPointerCapture(e.pointerId);
+          this.setState({ drag: { key, k: best } });
+        },
+        move: (e) => {
+          if (!drag) return;
+          const k = drag.k, start = k ? ends[k - 1] : 0, end = ends[k + 1];
+          const at = Math.max(start, Math.min(end, Math.round(toPos(e))));
+          const next = values.slice();
+          next[k] = at - start;
+          next[k + 1] = end - at;
+          set(next);
+        },
+        up: () => { if (drag) this.setState({ drag: null }); }
+      };
+    };
+    return {
+      pairLinked, pairUnlinked: !pairLinked, pairPressed: pairLinked ? 'true' : 'false',
+      pairLockCls: lockCls(pairLinked), pairLinkCls: 'lp-link' + (pairLinked ? ' on' : ''),
+      pairDepthCls: 'ls' + (pairLinked ? ' off' : ''), pairDepth: pairLinked ? '40' : '60', pairDepthPct: pairLinked ? 15 : 30,
+      pairTitle: pairLinked ? 'Depth follows width' : 'Link depth to width',
+      togglePair: () => this.setState({ pairLinked: !pairLinked }),
+      barsLinked, barsUnlinked: !barsLinked, barsPressed: barsLinked ? 'true' : 'false',
+      barsLockCls: lockCls(barsLinked), barsLinkCls: 'lp-link' + (barsLinked ? ' on' : ''),
+      barDCls: 'xb' + (barsLinked ? ' off' : ''),
+      barsTitle: barsLinked ? 'Depth split follows height split' : 'Link depth split to height split',
+      toggleBars: () => this.setState(barsLinked ? { barsLinked: false, depths: heights.slice() } : { barsLinked: true }),
+      barH: makeBar('h', heights, true),
+      barD: makeBar('d', depths, !barsLinked)
+    };
+  }
+}
+</script>
+</body>
+</html>
