@@ -1,10 +1,11 @@
 "use client";
 
-import type { ComponentProps, MouseEvent, ReactElement, ReactNode } from "react";
+import { useCallback, useRef, type ComponentProps, type MouseEvent, type ReactElement, type ReactNode } from "react";
 import { AlertDialog, Dialog as DialogPrimitive } from "radix-ui";
 import { Button } from "./button";
 import { cx } from "./cx";
 import { CloseIcon } from "./icons";
+import { useSwipeToDismiss } from "./swipe-dismiss";
 
 /** Root: `open`, `defaultOpen`, `onOpenChange`. Focus trap, scroll lock, Escape and outside clicks close it. */
 export const Dialog = DialogPrimitive.Root;
@@ -62,15 +63,47 @@ export interface SheetContentProps extends ComponentProps<typeof DialogPrimitive
   side?: "right" | "left" | "bottom" | "top";
   /** A ghost close button in the top-right corner. */
   showCloseButton?: boolean;
+  /**
+   * Dragging a `bottom` sheet down with a finger, from its scrolled-to-top
+   * position, closes it once dragged far or fast enough. On by default for
+   * `bottom`; ignored on other sides.
+   */
+  swipeToDismiss?: boolean;
 }
 
 /** Needs a SheetTitle (`className="sr-only"` to hide it). Not in the design artifacts; styled like the dialog. */
-export function SheetContent({ side = "right", showCloseButton = true, className, children, ...props }: SheetContentProps) {
+export function SheetContent({
+  side = "right",
+  showCloseButton = true,
+  swipeToDismiss = true,
+  className,
+  children,
+  ref,
+  ...props
+}: SheetContentProps) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const swipeRef = useSwipeToDismiss<HTMLDivElement>(() => closeRef.current?.click());
+  const swipe = swipeToDismiss && side === "bottom";
+  const contentRef = useCallback(
+    (el: HTMLDivElement) => {
+      swipeRef(swipe ? el : null);
+      const cleanup = typeof ref === "function" ? ref(el) : undefined;
+      if (ref && typeof ref !== "function") ref.current = el;
+      return () => {
+        swipeRef(null);
+        if (typeof cleanup === "function") cleanup();
+        else if (typeof ref === "function") ref(null);
+        else if (ref) ref.current = null;
+      };
+    },
+    [ref, swipe, swipeRef],
+  );
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="mm-overlay" />
-      <DialogPrimitive.Content data-side={side} className={cx("mm-sheet", className)} {...props}>
+      <DialogPrimitive.Content ref={contentRef} data-side={side} className={cx("mm-sheet", className)} {...props}>
         {children}
+        {swipe ? <DialogPrimitive.Close ref={closeRef} hidden tabIndex={-1} aria-hidden /> : null}
         {showCloseButton ? (
           <DialogPrimitive.Close asChild>
             <Button variant="ghost" size="sm" icon className="mm-sheet-close" aria-label="Close">

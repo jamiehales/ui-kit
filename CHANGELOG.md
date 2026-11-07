@@ -9,6 +9,10 @@ Each entry looks like this: `- **Kind** \`entry point\`: what changed. Migration
 - Name the exact symbols, parameters and variables in backticks, both old and new.
 - Leave out the Migration part when an app has nothing to do.
 
+## 2026-11-06
+
+- **Added** `@jamiehales/ui-kit/mostlymaking`: `SheetContent` `swipeToDismiss` (default `true`). A `side="bottom"` sheet now follows a downward finger drag that starts while it is scrolled to the top, and closes (through the Root's `onOpenChange`) when released far or fast enough; shorter drags spring back. Ignored on other sides. Migration: remove app-level drag-to-dismiss code on bottom sheets; pass `swipeToDismiss={false}` to keep a bottom sheet from closing on a swipe.
+
 ## 2026-11-01
 
 - **Added** `@jamiehales/ui-kit/mostlymaking`: `Accordion` takes `trailingDivider` (default `true`). Set it to `false` to drop the divider under the last item of a `plain` or `minimal` accordion, e.g. when a `Separator` already follows it. It sets `data-trailing-divider="false"` on `.mm-acc`.

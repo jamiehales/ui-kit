@@ -646,6 +646,74 @@ describe("Sheet", () => {
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
     expect(screen.queryByRole("dialog")).toBeNull();
   });
+
+  function renderBottomSheet() {
+    render(
+      <Sheet defaultOpen>
+        <SheetContent side="bottom" showCloseButton={false} aria-describedby={undefined}>
+          <SheetTitle>Preview</SheetTitle>
+        </SheetContent>
+      </Sheet>,
+    );
+    return screen.getByRole("dialog", { name: "Preview" });
+  }
+
+  function touch(el: HTMLElement, type: "touchStart" | "touchMove" | "touchEnd", y: number) {
+    const point = [{ clientX: 0, clientY: y }];
+    fireEvent[type](el, {
+      touches: type === "touchEnd" ? [] : point,
+      targetTouches: type === "touchEnd" ? [] : point,
+      changedTouches: point,
+    });
+  }
+
+  function drag(el: HTMLElement, to: number) {
+    touch(el, "touchStart", 0);
+    touch(el, "touchMove", 20);
+    touch(el, "touchMove", to);
+    touch(el, "touchEnd", to);
+  }
+
+  it("closes a bottom sheet dragged down far enough", () => {
+    vi.useFakeTimers();
+    try {
+      const sheet = renderBottomSheet();
+      drag(sheet, 200);
+      expect(sheet.style.transform).toBe("translateY(100%)");
+      act(() => vi.advanceTimersByTime(250));
+      expect(screen.queryByRole("dialog")).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("springs back from a short drag and ignores drags with swipeToDismiss off", () => {
+    vi.useFakeTimers();
+    try {
+      const sheet = renderBottomSheet();
+      touch(sheet, "touchStart", 0);
+      touch(sheet, "touchMove", 40);
+      expect(sheet.style.transform).toBe("translateY(40px)");
+      touch(sheet, "touchMove", 38);
+      touch(sheet, "touchEnd", 38);
+      expect(sheet.style.transform).toBe("");
+      act(() => vi.advanceTimersByTime(250));
+      expect(screen.getByRole("dialog")).toBeTruthy();
+    } finally {
+      vi.useRealTimers();
+    }
+    cleanup();
+    render(
+      <Sheet defaultOpen>
+        <SheetContent side="bottom" swipeToDismiss={false} aria-describedby={undefined}>
+          <SheetTitle>Static</SheetTitle>
+        </SheetContent>
+      </Sheet>,
+    );
+    const sheet = screen.getByRole("dialog", { name: "Static" });
+    drag(sheet, 200);
+    expect(sheet.style.transform).toBe("");
+  });
 });
 
 describe("CardLink", () => {
